@@ -3,79 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Analysis - Tu Nombre</title>
+    <title>Investment Research - Fundamental Analysis</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 20px;
         }
+
         .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .research-card {
             background: white;
             border-radius: 12px;
-            padding: 60px;
-            max-width: 800px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        h1 {
-            color: #1e3c72;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        .analyses {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-        .analysis-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
-            border-radius: 8px;
-            color: white;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
-        .analysis-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+
+        .research-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
         }
-        .analysis-card h3 {
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-ticker {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card-company {
+            font-size: 1.6em;
+            font-weight: 600;
             margin-bottom: 10px;
         }
-        .analysis-card p {
-            color: rgba(255,255,255,0.9);
+
+        .card-sector {
+            font-size: 0.9em;
+            opacity: 0.85;
+            margin-bottom: 15px;
+        }
+
+        .card-upside {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
             font-size: 0.95em;
         }
-        a { text-decoration: none; color: inherit; display: block; }
+
+        .upside-positive {
+            color: #4ade80;
+        }
+
+        .upside-negative {
+            color: #fca5a5;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-metrics {
+            margin-bottom: 15px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9em;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .card-date {
+            font-size: 0.8em;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .card-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .card-button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-company {
+                font-size: 1.3em;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Investment Analysis Hub</h1>
-        <p>Análisis fundamental detallado de compañías cotizadas</p>
-        
-        <div class="analyses">
-            <a href="puuilo/">
-                <div class="analysis-card">
-                    <h3>🏠 Puuilo (PUUI.HE)</h3>
-                    <p>Retailer nórdico especializado. Upside: +113%</p>
-                </div>
-            </a>
-            <!-- Aquí añadirás más análisis en el futuro -->
+        <header>
+            <h1>📊 Investment Research</h1>
+            <p>Análisis fundamental de empresas cotizadas</p>
+        </header>
+
+        <div class="research-grid" id="researchGrid">
+            <!-- Las tarjetas se generarán dinámicamente aquí -->
         </div>
+
+        <footer>
+            <p>© 2026 Investment Research. Análisis independiente. | <a href="#" style="color: inherit;">Disclaimer</a></p>
+        </footer>
     </div>
+
+    <script>
+        // Array de investigaciones - AQUÍ ES DONDE AÑADES NUEVAS EMPRESAS
+        const researches = [
+            {
+                id: 'puuilo',
+                ticker: 'PUUI.HE',
+                company: 'Puuilo',
+                sector: 'Retail - Home Décor & Hobby',
+                fairValue: '€26,62',
+                currentPrice: '€12,52',
+                upside: '+113%',
+                riskLevel: 'Medio',
+                date: 'Enero 2026',
+                metrics: [
+                    { label: 'Fair Value (BASE)', value: '€26,62' },
+                    { label: 'Upside Potencial', value: '+113%' },
+                    { label: 'Horizonte', value: '3-5 años' }
+                ]
+            },
+            // AÑADE AQUÍ NUEVAS EMPRESAS CON ESTE FORMATO:
+            // {
+            //     id: 'empresa2',
+            //     ticker: 'TICK.MX',
+            //     company: 'Nombre Empresa',
+            //     sector: 'Sector',
+            //     fairValue: '€XX,XX',
+            //     currentPrice: '€XX,XX',
+            //     upside: '+XXX%',
+            //     riskLevel: 'Bajo/Medio/Alto',
+            //     date: 'Mes Año',
+            //     metrics: [
+            //         { label: 'Métrica 1', value: 'Valor' },
+            //         { label: 'Métrica 2', value: 'Valor' }
+            //     ]
+            // }
+        ];
+
+        // Función para renderizar las tarjetas
+        function renderResearches() {
+            const grid = document.getElementById('researchGrid');
+            
+            if (researches.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <h3>📭 No hay investigaciones aún</h3>
+                        <p>Las investigaciones aparecerán aquí cuando las añadas al array</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = researches.map(research => `
+                <div class="research-card">
+                    <div class="card-header">
+                        <div class="card-ticker">${research.ticker}</div>
+                        <div class="card-company">${research.company}</div>
+                        <div class="card-sector">${research.sector}</div>
+                        <div class="card-upside">
+                            <span class="${research.upside.includes('-') ? 'upside-negative' : 'upside-positive'}">
+                                ${research.upside}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-metrics">
+                            ${research.metrics.map(metric => `
+                                <div class="metric">
+                                    <span class="metric-label">${metric.label}</span>
+                                    <span class="metric-value">${metric.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="card-date">Análisis: ${research.date}</div>
+                        <a href="${research.id}/" class="card-button">Ver Análisis Completo →</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Renderizar al cargar la página
+        renderResearches();
+    </script>
 </body>
 </html>
