@@ -146,6 +146,11 @@
             font-weight: 600;
         }
 
+        .metric-value.loading {
+            color: #999;
+            font-style: italic;
+        }
+
         .card-date {
             font-size: 0.8em;
             color: #999;
@@ -198,6 +203,11 @@
             font-size: 0.9em;
         }
 
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2em;
@@ -225,12 +235,16 @@
         </div>
 
         <footer>
-            <p>© 2026 Investment Research. Análisis independiente. | <a href="#" style="color: inherit;">Disclaimer</a></p>
+            <p>© 2026 Investment Research. Análisis independiente. | <a href="#">Disclaimer</a></p>
         </footer>
     </div>
 
     <script>
-        // Array de investigaciones - AQUÍ ES DONDE AÑADES NUEVAS EMPRESAS
+        // Tu API KEY de Finnhub (gratuita)
+        // Regístrate en: https://finnhub.io/register
+        const FINNHUB_API_KEY = 'd5brfrhr01qnaidvfhd0d5brfrhr01qnaidvfhdg'; // ← Cambiar esto
+
+        // Array de investigaciones
         const researches = [
             {
                 id: 'puuilo',
@@ -238,8 +252,8 @@
                 company: 'Puuilo',
                 sector: 'Retail - Home Décor & Hobby',
                 fairValue: '€26,62',
-                currentPrice: '€12,52',
-                upside: '+113%',
+                // currentPrice se obtendrá de la API automáticamente
+                upside: '+113%', // Se recalculará con precio real
                 riskLevel: 'Medio',
                 date: 'Enero 2026',
                 metrics: [
@@ -247,27 +261,46 @@
                     { label: 'Upside Potencial', value: '+113%' },
                     { label: 'Horizonte', value: '3-5 años' }
                 ]
-            },
-            // AÑADE AQUÍ NUEVAS EMPRESAS CON ESTE FORMATO:
-            // {
-            //     id: 'empresa2',
-            //     ticker: 'TICK.MX',
-            //     company: 'Nombre Empresa',
-            //     sector: 'Sector',
-            //     fairValue: '€XX,XX',
-            //     currentPrice: '€XX,XX',
-            //     upside: '+XXX%',
-            //     riskLevel: 'Bajo/Medio/Alto',
-            //     date: 'Mes Año',
-            //     metrics: [
-            //         { label: 'Métrica 1', value: 'Valor' },
-            //         { label: 'Métrica 2', value: 'Valor' }
-            //     ]
-            // }
+            }
+            // Añade más empresas aquí
         ];
 
+        // Función para obtener el precio actual
+        async function fetchCurrentPrice(ticker) {
+            try {
+                // Para tickers europeos, Finnhub usa formato: PUUI.HE
+                // Para US: AAPL
+                const response = await fetch(
+                    `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_API_KEY}`
+                );
+                const data = await response.json();
+                
+                if (data.c) {
+                    return {
+                        price: data.c,
+                        currency: ticker.includes('.') ? '€' : '$',
+                        timestamp: new Date(data.t * 1000).toLocaleString('es-ES')
+                    };
+                }
+                return null;
+            } catch (error) {
+                console.error(`Error fetching price for ${ticker}:`, error);
+                return null;
+            }
+        }
+
+        // Función para calcular upside
+        function calculateUpside(fairValue, currentPrice) {
+            const fair = parseFloat(fairValue.replace('€', '').replace('$', ''));
+            const current = parseFloat(currentPrice.replace('€', '').replace('$', ''));
+            
+            if (current === 0) return null;
+            const upside = ((fair - current) / current) * 100;
+            return Math.round(upside);
+        }
+
         // Función para renderizar las tarjetas
-        function renderResearches() {
+        async function renderResearches() {
             const grid = document.getElementById('researchGrid');
             
             if (researches.length === 0) {
@@ -280,7 +313,33 @@
                 return;
             }
 
-            grid.innerHTML = researches.map(research => `
+            // Obtener precios actuales para cada empresa
+            const researchesWithPrices = await Promise.all(
+                researches.map(async (research) => {
+                    const priceData = await fetchCurrentPrice(research.ticker);
+                    
+                    if (priceData) {
+                        const currentPrice = `${priceData.currency}${priceData.price.toFixed(2)}`;
+                        const upside = calculateUpside(research.fairValue, currentPrice);
+                        
+                        return {
+                            ...research,
+                            currentPrice,
+                            upside: upside >= 0 ? `+${upside}%` : `${upside}%`,
+                            priceTimestamp: priceData.timestamp
+                        };
+                    }
+                    
+                    return {
+                        ...research,
+                        currentPrice: 'N/A',
+                        priceTimestamp: 'No disponible'
+                    };
+                })
+            );
+
+            // Renderizar tarjetas
+            grid.innerHTML = researchesWithPrices.map(research => `
                 <div class="research-card">
                     <div class="card-header">
                         <div class="card-ticker">${research.ticker}</div>
@@ -294,14 +353,27 @@
                     </div>
                     <div class="card-body">
                         <div class="card-metrics">
-                            ${research.metrics.map(metric => `
-                                <div class="metric">
-                                    <span class="metric-label">${metric.label}</span>
-                                    <span class="metric-value">${metric.value}</span>
-                                </div>
-                            `).join('')}
+                            <div class="metric">
+                                <span class="metric-label">Precio Actual</span>
+                                <span class="metric-value">${research.currentPrice}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Fair Value</span>
+                                <span class="metric-value">${research.fairValue}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Upside</span>
+                                <span class="metric-value ${research.upside.includes('-') ? 'negative' : 'positive'}">${research.upside}</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Riesgo</span>
+                                <span class="metric-value">${research.riskLevel}</span>
+                            </div>
                         </div>
-                        <div class="card-date">Análisis: ${research.date}</div>
+                        <div class="card-date">
+                            Análisis: ${research.date}<br>
+                            <small style="opacity: 0.7;">Precio: ${research.priceTimestamp}</small>
+                        </div>
                         <a href="${research.id}/" class="card-button">Ver Análisis Completo →</a>
                     </div>
                 </div>
@@ -310,6 +382,9 @@
 
         // Renderizar al cargar la página
         renderResearches();
+
+        // Actualizar precios cada 5 minutos
+        setInterval(renderResearches, 5 * 60 * 1000);
     </script>
 </body>
 </html>
