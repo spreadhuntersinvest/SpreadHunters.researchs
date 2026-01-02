@@ -20,14 +20,14 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             color: white;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             padding-top: 40px;
         }
 
@@ -42,11 +42,115 @@
             opacity: 0.95;
         }
 
+        /* FILTROS */
+        .filters-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .filters-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #333;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .clear-filters {
+            padding: 10px 16px;
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .clear-filters:hover {
+            background: #e0e0e0;
+        }
+
+        .filters-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* VISTA POR TIPO DE INVERSIÓN */
+        .investment-type-section {
+            margin-bottom: 50px;
+        }
+
+        .investment-type-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .investment-type-icon {
+            font-size: 2em;
+        }
+
+        .investment-type-title {
+            color: white;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .investment-type-count {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
         .research-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         .research-card {
@@ -184,6 +288,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             border: 2px dashed rgba(255, 255, 255, 0.3);
+            grid-column: 1 / -1;
         }
 
         .empty-state h3 {
@@ -193,6 +298,17 @@
 
         .empty-state p {
             opacity: 0.9;
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
         }
 
         footer {
@@ -220,6 +336,20 @@
             .card-company {
                 font-size: 1.3em;
             }
+
+            .filters-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .investment-type-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .investment-type-count {
+                margin-left: 0;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
@@ -227,11 +357,23 @@
     <div class="container">
         <header>
             <h1>📊 Investment Research</h1>
-            <p>Análisis fundamental de empresas cotizadas</p>
+            <p>Análisis fundamental de situaciones especiales de inversión</p>
         </header>
 
-        <div class="research-grid" id="researchGrid">
-            <!-- Las tarjetas se generarán dinámicamente aquí -->
+        <!-- SECCIÓN DE FILTROS -->
+        <div class="filters-section">
+            <div class="filters-title">🔍 Filtrar por tipo de inversión</div>
+            <div class="filters-grid" id="filtersContainer">
+                <!-- Los botones se generarán dinámicamente aquí -->
+            </div>
+            <div class="filters-actions">
+                <button class="clear-filters" onclick="clearFilters()">Limpiar filtros</button>
+            </div>
+        </div>
+
+        <!-- RESULTADOS AGRUPADOS POR TIPO DE INVERSIÓN -->
+        <div id="resultsContainer">
+            <!-- Los resultados se generarán dinámicamente aquí -->
         </div>
 
         <footer>
@@ -240,11 +382,69 @@
     </div>
 
     <script>
-        // Tu API KEY de Finnhub (gratuita)
-        // Regístrate en: https://finnhub.io/register
-        const FINNHUB_API_KEY = 'd5brfrhr01qnaidvfhd0d5brfrhr01qnaidvfhdg'; // ← Cambiar esto
+        // ============================================
+        // CONFIGURACIÓN DE TIPOS DE INVERSIÓN
+        // ============================================
+        const investmentTypes = {
+            'long-value-growth': {
+                name: 'Long Value-Growth',
+                icon: '📈',
+                description: 'Compañías con crecimiento sólido y valuation atractiva',
+                color: '#667eea'
+            },
+            'spin-offs': {
+                name: 'Spin-offs',
+                icon: '🔀',
+                description: 'Separación de unidades de negocios',
+                color: '#8b5cf6'
+            },
+            'shorts-situations': {
+                name: 'Short Situations',
+                icon: '⬇️',
+                description: 'Oportunidades de venta corta',
+                color: '#ef4444'
+            },
+            'uplisting': {
+                name: 'Uplisting',
+                icon: '⬆️',
+                description: 'Cambios de bolsa/índice',
+                color: '#10b981'
+            },
+            'demergers': {
+                name: 'Demergers',
+                icon: '📊',
+                description: 'Escisiones y separaciones de empresas',
+                color: '#f59e0b'
+            },
+            'tender-offers': {
+                name: 'Tender Offers',
+                icon: '🎯',
+                description: 'Ofertas públicas de compra',
+                color: '#ec4899'
+            },
+            'turnaround': {
+                name: 'Turnaround',
+                icon: '🔄',
+                description: 'Empresas en recuperación',
+                color: '#06b6d4'
+            },
+            'takeover': {
+                name: 'Takeover',
+                icon: '🏢',
+                description: 'Adquisiciones y fusiones',
+                color: '#6366f1'
+            },
+            'odd-lots': {
+                name: 'Odd Lots',
+                icon: '🎲',
+                description: 'Pequeños números de acciones',
+                color: '#a78bfa'
+            }
+        };
 
-        // Array de investigaciones
+        // ============================================
+        // ARRAY DE INVESTIGACIONES
+        // ============================================
         const researches = [
             {
                 id: 'puuilo',
@@ -252,24 +452,88 @@
                 company: 'Puuilo',
                 sector: 'Retail - Home Décor & Hobby',
                 fairValue: '€26,62',
-                // currentPrice se obtendrá de la API automáticamente
-                upside: '+113%', // Se recalculará con precio real
+                upside: '+113%',
                 riskLevel: 'Medio',
                 date: 'Enero 2026',
+                type: 'long-value-growth',
                 metrics: [
                     { label: 'Fair Value (BASE)', value: '€26,62' },
                     { label: 'Upside Potencial', value: '+113%' },
                     { label: 'Horizonte', value: '3-5 años' }
                 ]
             }
-            // Añade más empresas aquí
+            // PLANTILLA PARA AÑADIR MÁS EMPRESAS:
+            // {
+            //     id: 'empresa-slug',
+            //     ticker: 'TICK.XX',
+            //     company: 'Nombre Empresa',
+            //     sector: 'Sector',
+            //     fairValue: '€XX,XX',
+            //     upside: '+XXX%',
+            //     riskLevel: 'Bajo/Medio/Alto',
+            //     date: 'Mes Año',
+            //     type: 'long-value-growth', // o cualquier otro tipo
+            //     metrics: [
+            //         { label: 'Fair Value (BASE)', value: '€XX,XX' },
+            //         { label: 'Upside Potencial', value: '+XXX%' },
+            //         { label: 'Horizonte', value: 'X-Y años' }
+            //     ]
+            // }
         ];
 
-        // Función para obtener el precio actual
+        // ============================================
+        // ESTADO DE FILTROS
+        // ============================================
+        let activeFilters = new Set();
+
+        // ============================================
+        // FUNCIÓN: Renderizar filtros
+        // ============================================
+        function renderFilters() {
+            const container = document.getElementById('filtersContainer');
+            
+            container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
+                <button 
+                    class="filter-btn ${activeFilters.has(key) ? 'active' : ''}" 
+                    onclick="toggleFilter('${key}')"
+                    title="${type.description}"
+                >
+                    ${type.icon} ${type.name}
+                </button>
+            `).join('');
+        }
+
+        // ============================================
+        // FUNCIÓN: Alternar filtro
+        // ============================================
+        function toggleFilter(typeKey) {
+            if (activeFilters.has(typeKey)) {
+                activeFilters.delete(typeKey);
+            } else {
+                activeFilters.add(typeKey);
+            }
+            renderFilters();
+            renderResults();
+        }
+
+        // ============================================
+        // FUNCIÓN: Limpiar filtros
+        // ============================================
+        function clearFilters() {
+            activeFilters.clear();
+            renderFilters();
+            renderResults();
+        }
+
+        // ============================================
+        // FUNCIÓN: Obtener precio actual (Finnhub)
+        // ============================================
         async function fetchCurrentPrice(ticker) {
+            // Descomentar y añadir tu API KEY cuando lo tengas
+            // const FINNHUB_API_KEY = 'D5brfrhr01qnaidvfhd0d5brfrhr01qnaidvfhdg';
+            
             try {
-                // Para tickers europeos, Finnhub usa formato: PUUI.HE
-                // Para US: AAPL
+                /*
                 const response = await fetch(
                     `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_API_KEY}`
                 );
@@ -282,6 +546,7 @@
                         timestamp: new Date(data.t * 1000).toLocaleString('es-ES')
                     };
                 }
+                */
                 return null;
             } catch (error) {
                 console.error(`Error fetching price for ${ticker}:`, error);
@@ -289,7 +554,9 @@
             }
         }
 
-        // Función para calcular upside
+        // ============================================
+        // FUNCIÓN: Calcular upside
+        // ============================================
         function calculateUpside(fairValue, currentPrice) {
             const fair = parseFloat(fairValue.replace('€', '').replace('$', ''));
             const current = parseFloat(currentPrice.replace('€', '').replace('$', ''));
@@ -299,23 +566,30 @@
             return Math.round(upside);
         }
 
-        // Función para renderizar las tarjetas
-        async function renderResearches() {
-            const grid = document.getElementById('researchGrid');
-            
-            if (researches.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1 / -1;">
-                        <h3>📭 No hay investigaciones aún</h3>
-                        <p>Las investigaciones aparecerán aquí cuando las añadas al array</p>
+        // ============================================
+        // FUNCIÓN: Renderizar resultados
+        // ============================================
+        async function renderResults() {
+            const container = document.getElementById('resultsContainer');
+
+            // Filtrar investigaciones según filtros activos
+            const filteredResearches = activeFilters.size === 0 
+                ? researches 
+                : researches.filter(r => activeFilters.has(r.type));
+
+            if (filteredResearches.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>📭 No hay investigaciones con estos filtros</h3>
+                        <p>Limpia los filtros o añade nuevas investigaciones</p>
                     </div>
                 `;
                 return;
             }
 
-            // Obtener precios actuales para cada empresa
+            // Obtener precios actuales
             const researchesWithPrices = await Promise.all(
-                researches.map(async (research) => {
+                filteredResearches.map(async (research) => {
                     const priceData = await fetchCurrentPrice(research.ticker);
                     
                     if (priceData) {
@@ -338,53 +612,82 @@
                 })
             );
 
-            // Renderizar tarjetas
-            grid.innerHTML = researchesWithPrices.map(research => `
-                <div class="research-card">
-                    <div class="card-header">
-                        <div class="card-ticker">${research.ticker}</div>
-                        <div class="card-company">${research.company}</div>
-                        <div class="card-sector">${research.sector}</div>
-                        <div class="card-upside">
-                            <span class="${research.upside.includes('-') ? 'upside-negative' : 'upside-positive'}">
-                                ${research.upside}
-                            </span>
+            // Agrupar por tipo de inversión
+            const groupedByType = {};
+            researchesWithPrices.forEach(research => {
+                if (!groupedByType[research.type]) {
+                    groupedByType[research.type] = [];
+                }
+                groupedByType[research.type].push(research);
+            });
+
+            // Renderizar por tipo
+            container.innerHTML = Object.entries(groupedByType).map(([typeKey, researches]) => {
+                const typeInfo = investmentTypes[typeKey];
+                
+                return `
+                    <div class="investment-type-section">
+                        <div class="investment-type-header">
+                            <div class="investment-type-icon">${typeInfo.icon}</div>
+                            <div class="investment-type-title">${typeInfo.name}</div>
+                            <div class="investment-type-count">${researches.length} ${researches.length === 1 ? 'análisis' : 'análisis'}</div>
+                        </div>
+                        
+                        <div class="research-grid">
+                            ${researches.map(research => `
+                                <div class="research-card">
+                                    <div class="card-header">
+                                        <div class="card-ticker">${research.ticker}</div>
+                                        <div class="card-company">${research.company}</div>
+                                        <div class="card-sector">${research.sector}</div>
+                                        <div class="card-upside">
+                                            <span class="${research.upside.includes('-') ? 'upside-negative' : 'upside-positive'}">
+                                                ${research.upside}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card-metrics">
+                                            ${research.currentPrice && research.currentPrice !== 'N/A' ? `
+                                                <div class="metric">
+                                                    <span class="metric-label">Precio Actual</span>
+                                                    <span class="metric-value">${research.currentPrice}</span>
+                                                </div>
+                                            ` : ''}
+                                            <div class="metric">
+                                                <span class="metric-label">Fair Value</span>
+                                                <span class="metric-value">${research.fairValue}</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-label">Upside</span>
+                                                <span class="metric-value ${research.upside.includes('-') ? 'negative' : 'positive'}">${research.upside}</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-label">Riesgo</span>
+                                                <span class="metric-value">${research.riskLevel}</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-date">
+                                            Análisis: ${research.date}<br>
+                                            ${research.priceTimestamp && research.priceTimestamp !== 'No disponible' ? `
+                                                <small style="opacity: 0.7;">Precio: ${research.priceTimestamp}</small>
+                                            ` : ''}
+                                        </div>
+                                        <a href="${research.id}/" class="card-button">Ver Análisis Completo →</a>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="card-metrics">
-                            <div class="metric">
-                                <span class="metric-label">Precio Actual</span>
-                                <span class="metric-value">${research.currentPrice}</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-label">Fair Value</span>
-                                <span class="metric-value">${research.fairValue}</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-label">Upside</span>
-                                <span class="metric-value ${research.upside.includes('-') ? 'negative' : 'positive'}">${research.upside}</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-label">Riesgo</span>
-                                <span class="metric-value">${research.riskLevel}</span>
-                            </div>
-                        </div>
-                        <div class="card-date">
-                            Análisis: ${research.date}<br>
-                            <small style="opacity: 0.7;">Precio: ${research.priceTimestamp}</small>
-                        </div>
-                        <a href="${research.id}/" class="card-button">Ver Análisis Completo →</a>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // Renderizar al cargar la página
-        renderResearches();
-
-        // Actualizar precios cada 5 minutos
-        setInterval(renderResearches, 5 * 60 * 1000);
+        // ============================================
+        // INICIALIZAR
+        // ============================================
+        renderFilters();
+        renderResults();
     </script>
 </body>
 </html>
