@@ -162,7 +162,7 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            text-decoration: none; /* Quitamos subrayado del enlace */
+            text-decoration: none;
         }
 
         .research-card:hover {
@@ -287,6 +287,28 @@
             margin-bottom: 10px;
         }
 
+        .loading-message {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            font-size: 1.1em;
+        }
+
+        .spinner-small {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         footer {
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
@@ -349,11 +371,14 @@
 
         <!-- RESULTADOS AGRUPADOS POR TIPO DE INVERSIÓN -->
         <div id="resultsContainer">
-            <!-- Los resultados se generarán dinámicamente aquí -->
+            <div class="loading-message">
+                <span class="spinner-small"></span>Cargando investigaciones dinámicamente...
+            </div>
         </div>
 
         <footer>
             <p>© 2026 Investment Research. Análisis independiente. | <a href="#">Disclaimer</a></p>
+            <p>Datos actualizados dinámicamente desde cada investigación</p>
         </footer>
     </div>
 
@@ -374,30 +399,102 @@
         };
 
         // ============================================
-        // DATOS ESTÁTICOS (Sin llamar a APIs)
+        // INVESTIGACIONES DISPONIBLES
         // ============================================
-        const researchesData = [
+        const investigacionesAvailables = [
             {
                 id: 'puuilo',
-                path: 'puuilo/index.html',
-                type: 'long-value-growth',
-                ticker: 'PUUILO.HE',
-                company: 'Puuilo',
-                sector: 'Retail - Home Décor',
-                fairValue: '€26,62',
-                currentPrice: '€12,52',
-                upside: '+113%',
-                riskLevel: 'Medio',
-                date: 'Enero 2026'
+                path: './puuilo/index.html',
+                cacheKey: 'research_puuilo'
             }
-            // Aquí podrás añadir más empresas en el futuro
+            // Aquí se pueden añadir más investigaciones en el futuro
         ];
 
+        let researchesData = [];
         let activeFilters = new Set();
+        let loadingCount = 0;
 
         // ============================================
-        // RENDERIZADO
+        // FUNCIONES PRINCIPALES
         // ============================================
+
+        /**
+         * Carga dinámicamente los datos de todas las investigaciones
+         */
+        async function loadResearchesData() {
+            loadingCount = investigacionesAvailables.length;
+
+            for (const inv of investigacionesAvailables) {
+                loadResearchData(inv);
+            }
+        }
+
+        /**
+         * Carga datos de una investigación específica
+         */
+        async function loadResearchData(investigacion) {
+            try {
+                // Primero, intentar obtener del localStorage
+                const cached = localStorage.getItem(investigacion.cacheKey);
+                
+                if (cached) {
+                    const data = JSON.parse(cached);
+                    console.log(`✓ Datos de ${investigacion.id} cargados desde cache:`, data);
+                    researchesData.push(data);
+                    loadingCount--;
+                    
+                    if (loadingCount === 0) {
+                        renderFilters();
+                        renderResults();
+                    }
+                    return;
+                }
+
+                // Si no hay cache, cargar la página en un iframe oculto
+                // para que se ejecute su script y guarde los datos
+                console.log(`⚠️ No hay cache para ${investigacion.id}, cargando desde página...`);
+                
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = investigacion.path;
+                iframe.onload = () => {
+                    // Esperar a que el script de la página guarde los datos
+                    setTimeout(() => {
+                        const cached = localStorage.getItem(investigacion.cacheKey);
+                        if (cached) {
+                            const data = JSON.parse(cached);
+                            console.log(`✓ Datos de ${investigacion.id} cargados desde página:`, data);
+                            researchesData.push(data);
+                        } else {
+                            console.warn(`✗ No se pudo cargar datos de ${investigacion.id}`);
+                        }
+                        
+                        loadingCount--;
+                        document.body.removeChild(iframe);
+                        
+                        if (loadingCount === 0) {
+                            renderFilters();
+                            renderResults();
+                        }
+                    }, 1000); // Esperar a que se guarden los datos
+                };
+                
+                document.body.appendChild(iframe);
+                
+            } catch (error) {
+                console.error(`Error cargando ${investigacion.id}:`, error);
+                loadingCount--;
+                
+                if (loadingCount === 0) {
+                    renderFilters();
+                    renderResults();
+                }
+            }
+        }
+
+        /**
+         * Renderiza los botones de filtro
+         */
         function renderFilters() {
             const container = document.getElementById('filtersContainer');
             container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
@@ -411,6 +508,9 @@
             `).join('');
         }
 
+        /**
+         * Alterna un filtro
+         */
         function toggleFilter(typeKey) {
             if (activeFilters.has(typeKey)) activeFilters.delete(typeKey);
             else activeFilters.add(typeKey);
@@ -418,12 +518,18 @@
             renderFilters();
         }
 
+        /**
+         * Limpia todos los filtros
+         */
         function clearFilters() {
             activeFilters.clear();
             renderFilters();
             renderResults();
         }
 
+        /**
+         * Renderiza los resultados agrupados por tipo
+         */
         function renderResults() {
             const container = document.getElementById('resultsContainer');
             
@@ -433,18 +539,22 @@
                 : researchesData.filter(r => activeFilters.has(r.type));
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
+                if (researchesData.length === 0) {
+                    container.innerHTML = `<div class="loading-message"><span class="spinner-small"></span>Cargando investigaciones...</div>`;
+                } else {
+                    container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
+                }
                 return;
             }
 
-            // Agrupar
+            // Agrupar por tipo
             const grouped = {};
             filtered.forEach(r => {
                 if (!grouped[r.type]) grouped[r.type] = [];
                 grouped[r.type].push(r);
             });
 
-            // HTML
+            // Generar HTML
             container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
                 const typeInfo = investmentTypes[typeKey];
                 return `
@@ -456,18 +566,31 @@
                         </div>
                         <div class="research-grid">
                             ${items.map(item => `
-                                <a href="${item.path}" class="research-card">
+                                <a href="${item.path || '#'}" class="research-card">
                                     <div class="card-header">
                                         <div class="card-ticker">${item.ticker}</div>
                                         <div class="card-company">${item.company}</div>
                                         <div class="card-sector">${item.sector}</div>
-                                        <div class="card-upside"><span class="upside-positive">${item.upside}</span></div>
+                                        <div class="card-upside">
+                                            <span class="${item.upside > 0 ? 'upside-positive' : 'upside-negative'}">
+                                                ${item.upside > 0 ? '+' : ''}${item.upside}%
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="card-metrics">
-                                            <div class="metric"><span class="metric-label">Precio Actual</span><span class="metric-value">${item.currentPrice}</span></div>
-                                            <div class="metric"><span class="metric-label">Fair Value</span><span class="metric-value">${item.fairValue}</span></div>
-                                            <div class="metric"><span class="metric-label">Riesgo</span><span class="metric-value">${item.riskLevel}</span></div>
+                                            <div class="metric">
+                                                <span class="metric-label">Precio Actual</span>
+                                                <span class="metric-value">€${item.currentPrice.toFixed(2)}</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-label">Fair Value</span>
+                                                <span class="metric-value">€${item.fairValue.toFixed(2)}</span>
+                                            </div>
+                                            <div class="metric">
+                                                <span class="metric-label">Riesgo</span>
+                                                <span class="metric-value">${item.riskLevel}</span>
+                                            </div>
                                         </div>
                                         <div class="card-date">Análisis: ${item.date}</div>
                                         <span class="card-button">Ver Análisis Completo →</span>
@@ -480,10 +603,11 @@
             }).join('');
         }
 
-        // INICIAR
+        // ============================================
+        // INICIALIZAR
+        // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            renderFilters();
-            renderResults();
+            loadResearchesData();
         });
     </script>
 </body>
