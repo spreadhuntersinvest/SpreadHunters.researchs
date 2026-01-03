@@ -13,22 +13,24 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f7fa;
             color: #333;
-            min-height: 100vh;
-            padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         header {
-            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            margin-bottom: 40px;
-            padding-top: 40px;
+            padding: 40px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         }
 
         header h1 {
@@ -36,126 +38,212 @@
             margin-bottom: 10px;
         }
 
-        .data-status {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            max-width: 600px;
-            margin: 20px auto;
-            text-align: center;
-        }
-
-        .data-status.loading {
-            background: rgba(255, 165, 0, 0.2);
-            border-left: 4px solid #ffa500;
-        }
-
-        .data-status.success {
-            background: rgba(76, 175, 80, 0.2);
-            border-left: 4px solid #4caf50;
-        }
-
-        .data-status.error {
-            background: rgba(244, 67, 54, 0.2);
-            border-left: 4px solid #f44336;
-        }
-
-        .kpi-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .kpi-card {
-            background: linear-gradient(135deg, #f5f7ff 0%, #ffffff 100%);
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .kpi-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .kpi-value {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .kpi-value.positive {
-            color: #4ade80;
-        }
-
-        .kpi-value.negative {
-            color: #ff6b6b;
-        }
-
-        .kpi-subtitle {
-            font-size: 0.85em;
-            color: #999;
-            margin-top: 5px;
-        }
-
-        .content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .content h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .content p {
-            line-height: 1.6;
-            color: #666;
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
             margin-bottom: 15px;
         }
 
-        footer {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 0.9em;
+        .price-ticker {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4ade80;
         }
 
-        /* Datos ocultos para el index principal */
-        [data-research-cache] {
-            display: none;
+        .price-ticker.error {
+            border-left-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.15);
+        }
+
+        .price-ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+            margin-right: 30px;
+        }
+
+        .price-ticker-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .price-ticker-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .price-ticker-upside {
+            color: #4ade80;
+        }
+
+        .price-ticker-upside.negative {
+            color: #ff6b6b;
+        }
+
+        .data-status {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 10px;
         }
 
         .spinner {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
+            margin-right: 5px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        main {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        table th {
+            background: #f5f7ff;
+            color: #667eea;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        table tr:hover {
+            background: #f9f9f9;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Destacar valores dinámicos */
+        .dynamic-price {
+            background: #fffacd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .dynamic-upside {
+            background: #e8f5e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #4ade80;
+        }
+
+        .dynamic-upside.negative {
+            background: #ffebee;
+            color: #ff6b6b;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .positive {
+            color: #4ade80;
+        }
+
+        .negative {
+            color: #ff6b6b;
+        }
+
+        footer {
+            background: #f5f7fa;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #999;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .api-indicator {
+            font-size: 0.8em;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(76, 175, 80, 0.2);
+            color: #4ade80;
+            margin-left: 10px;
+        }
+
+        .api-indicator.fallback {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .api-indicator.error {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
         }
     </style>
 </head>
@@ -163,69 +251,295 @@
     <div class="container">
         <header>
             <h1>🏪 PUUILO OYJ</h1>
-            <p>Equity Research - Análisis Fundamental</p>
-            <div class="data-status loading" id="dataStatus">
-                <span class="spinner"></span> Cargando datos del API...
+            <p>Equity Research - Análisis Fundamental Dinámico</p>
+            
+            <div class="price-ticker" id="priceTicker">
+                <div class="price-ticker-item">
+                    <div>
+                        <div class="price-ticker-label">Precio Actual</div>
+                        <div class="price-ticker-value" id="currentPrice">€12,52</div>
+                    </div>
+                </div>
+                <div class="price-ticker-item">
+                    <div>
+                        <div class="price-ticker-label">Upside Potencial</div>
+                        <div class="price-ticker-value price-ticker-upside" id="upsideValue">+113%</div>
+                    </div>
+                </div>
+                <div class="data-status" id="dataStatus">
+                    <span class="spinner"></span>Actualizando datos...
+                </div>
             </div>
         </header>
 
-        <!-- KPIs DINÁMICOS -->
-        <div class="kpi-section">
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">Ticker</div>
-                    <div class="kpi-value" id="ticker">-</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Precio Actual (Cierre)</div>
-                    <div class="kpi-value" id="currentPrice">-</div>
-                    <div class="kpi-subtitle" id="priceDate">-</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Fair Value</div>
-                    <div class="kpi-value" id="fairValue">€26,62</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Upside Potencial</div>
-                    <div class="kpi-value" id="upside">-</div>
-                    <div class="kpi-subtitle">vs. precio actual</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONTENIDO DE ANÁLISIS -->
-        <div class="content">
-            <h2>📊 Análisis Fundamental</h2>
-            <p><strong>Puuilo OYJ</strong> es una empresa finlandesa especializada en la venta de artículos de hogar, ocio y decoración. 
-            Opera principalmente en Finlandia a través de tiendas físicas y canales de e-commerce.</p>
+        <main>
+            <h2>📈 Resumen Ejecutivo</h2>
             
-            <h3 style="margin-top: 25px; color: #333;">Tesis de Inversión</h3>
-            <p>La empresa presenta una valuación atractiva con potential upside significativo basado en el Fair Value estimado. 
-            El análisis fundamental sugiere una oportunidad de compra en la categoría Long Value-Growth.</p>
+            <p><strong>Retailer nórdico especializado</strong> en decoración del hogar, hobby y jardinería, en expansión agresiva con:</p>
 
-            <h3 style="margin-top: 25px; color: #333;">Datos Técnicos</h3>
-            <p>
-                <strong>Bolsa:</strong> Helsinki (HE)<br>
-                <strong>Sector:</strong> Retail - Home Décor & Hobby<br>
-                <strong>Tipo de Inversión:</strong> Long Value-Growth<br>
-                <strong>Nivel de Riesgo:</strong> Medio
-            </p>
+            <div class="highlight">
+                <strong>vs Precio Actual <span class="dynamic-price" id="priceDisplay">€12,52</span> = <span class="dynamic-upside" id="upsideDisplay">+113%</span> Upside</strong>
+            </div>
 
-            <h3 style="margin-top: 25px; color: #333;">Nota Importante</h3>
-            <p style="color: #999; font-size: 0.95em;">
-                Los precios se actualizan con el cierre del día anterior para minimizar latencia en la carga. 
-                Última actualización: <span id="lastUpdate">-</span>
-            </p>
-        </div>
+            <h3>Escenarios de Valuación</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Escenario</th>
+                        <th>Probabilidad</th>
+                        <th>Fair Value</th>
+                        <th>Upside</th>
+                        <th>Drivers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>BEAR</strong></td>
+                        <td>20-25%</td>
+                        <td>€18-20</td>
+                        <td>45-60%</td>
+                        <td>Margin 21,5%, WC 1,5%, Growth 2,5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BASE CASE</strong></td>
+                        <td>50-55%</td>
+                        <td>€26,62</td>
+                        <td><span class="dynamic-upside" id="baseCaseUpside">113%</span></td>
+                        <td>Margin 22,5%, WC 1,0%, Growth 4,0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BULL</strong></td>
+                        <td>20-25%</td>
+                        <td>€30-33</td>
+                        <td>140-165%</td>
+                        <td>Margin 24,0%, WC 0,8%, Growth 5,0%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Proyecciones Financieras</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>FY25</th>
+                        <th>FY26E</th>
+                        <th>FY28E</th>
+                        <th>FY31E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ventas (€M)</strong></td>
+                        <td>501</td>
+                        <td>501</td>
+                        <td>645</td>
+                        <td>866</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EBITDA Margin %</strong></td>
+                        <td>21,6%</td>
+                        <td>22,0%</td>
+                        <td>22,4%</td>
+                        <td>22,5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FCF (€M)</strong></td>
+                        <td>53</td>
+                        <td>56</td>
+                        <td>84</td>
+                        <td>125</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ND/EBITDA (x)</strong></td>
+                        <td>1,31x</td>
+                        <td>1,24x</td>
+                        <td>1,09x</td>
+                        <td>0,96x</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ROE %</strong></td>
+                        <td>60%</td>
+                        <td>59%</td>
+                        <td>54%</td>
+                        <td>51%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Análisis de Insider Trading</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Insider</th>
+                        <th>Posición</th>
+                        <th>Stake</th>
+                        <th>Actividad Reciente</th>
+                        <th>Alignment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Markku Tuomaala</strong></td>
+                        <td>Fundador, Board Member</td>
+                        <td>4,9%</td>
+                        <td>Holdings estables, NO VENDIENDO</td>
+                        <td>✓ EXCELENTE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jens Joller</strong></td>
+                        <td>CEO (desde 2019)</td>
+                        <td>~0,5%</td>
+                        <td>Compró 2.000 @ €12,47 (Dic 2025)</td>
+                        <td>✓ BULLISH</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Susanne Hounsgaard</strong></td>
+                        <td>CFO</td>
+                        <td>~0,3%</td>
+                        <td>Compró 800 @ €12,35 (Dic 2025)</td>
+                        <td>✓ BULLISH</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                CEO + CFO comprando <strong>simultáneamente</strong> cercano a precios actuales (€12,35-12,47) es señal muy positiva
+            </div>
+
+            <h3>Catalizadores y Tesis</h3>
+            <ul>
+                <li><strong>Mitigación:</strong> Track record comprobado (60+ stores en 8 años), ROIC 18-22%, experienced team</li>
+                <li><strong>Mitigación:</strong> Private label growing (higher margin), pricing power, cost management improving</li>
+                <li><strong>Mitigación:</strong> Physical + experience defensible en home décor, local expertise, curación</li>
+                <li><strong>Mitigación:</strong> Home décor + hobby resiliente, private label accessible pricing</li>
+            </ul>
+
+            <h3>Análisis Comparativo</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>EV/EBITDA</th>
+                        <th>P/E</th>
+                        <th>EV/Sales</th>
+                        <th>Crecimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Inditex</strong></td>
+                        <td>19,2x</td>
+                        <td>23,2x</td>
+                        <td>1,28x</td>
+                        <td>8-10%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>H&M</strong></td>
+                        <td>13,1x</td>
+                        <td>15,8x</td>
+                        <td>0,95x</td>
+                        <td>3-5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stockmann</strong></td>
+                        <td>9,4x</td>
+                        <td>11,2x</td>
+                        <td>0,70x</td>
+                        <td>2-3%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Puuilo (Current)</strong></td>
+                        <td>11,3x</td>
+                        <td>16,2x</td>
+                        <td>0,80x</td>
+                        <td>13%+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Puuilo (Fair)</strong></td>
+                        <td>14,5x</td>
+                        <td>19,8x</td>
+                        <td>0,95x</td>
+                        <td>13%+</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>📊 Recomendación de Inversión</h2>
+            
+            <div class="highlight">
+                <strong>Precio Actual:</strong> <span class="dynamic-price" id="priceRecommendation">€12,52</span> | Upside: <span class="dynamic-upside" id="upsideRecommendation">+113%</span><br>
+                <strong>Riesgo:</strong> MEDIO | <strong>Horizonte:</strong> 3-5 años
+            </div>
+
+            <h3>Estrategia de Entrada/Salida</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Precio</th>
+                        <th>Recomendación</th>
+                        <th>Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>€12,50-14,00</strong></td>
+                        <td>GOOD ENTRY</td>
+                        <td>Current levels, attractive valuation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>€14,00-16,00</strong></td>
+                        <td>REASONABLE</td>
+                        <td>Minor pullback, still attractive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>>€16,00</strong></td>
+                        <td>WAIT</td>
+                        <td>Wait for dip if thesis unchanged</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Price Targets</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Price Target</th>
+                        <th>Action</th>
+                        <th>Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>€20-22</strong></td>
+                        <td>Take 25%</td>
+                        <td>Lock in gains, validate thesis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>€24-26</strong></td>
+                        <td>HOLD</td>
+                        <td>Base case delivery, target</td>
+                    </tr>
+                    <tr>
+                        <td><strong>€28-30</strong></td>
+                        <td>REASSESS</td>
+                        <td>Bull case being delivered?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>>€32</strong></td>
+                        <td>STRONG SELL</td>
+                        <td>Valuation excessive</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
 
         <footer>
             <p>© 2026 Investment Research. Análisis independiente.</p>
-            <p>Datos obtenidos dinámicamente del API de precios (caché diario)</p>
+            <p>Datos de precios actualizados dinámicamente cada 1 hora desde Finnhub API<span class="api-indicator" id="apiStatus">Inicializando...</span></p>
+            <p id="lastUpdateTime">Última actualización: -</p>
         </footer>
     </div>
-
-    <!-- CONTENEDOR DE DATOS PARA EL INDEX PRINCIPAL -->
-    <div data-research-cache="puuilo"></div>
 
     <script>
         // ============================================
@@ -233,90 +547,90 @@
         // ============================================
         const API_KEY = 'd5bt99pr01qsbmgh603gd5bt99pr01qsbmgh6040';
         const TICKER = 'PUUILO.HE';
-        const FAIR_VALUE = 26.62; // En euros
+        const FAIR_VALUE = 26.62; // Fair Value Base Case en euros
+        const FALLBACK_PRICE = 12.52; // Precio manual si falla API
+        const UPDATE_INTERVAL = 60 * 60 * 1000; // 1 hora en ms
         const CACHE_KEY = 'puuilo_price_cache';
-        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 horas en ms
 
         // ============================================
         // FUNCIONES PRINCIPALES
         // ============================================
 
         /**
-         * Obtiene el precio actual del API o del cache
+         * Obtiene el precio del API con fallback
          */
-        async function getPrice() {
-            const statusEl = document.getElementById('dataStatus');
-            
-            // Primero, intentar obtener del cache
-            const cached = getCachedPrice();
-            if (cached) {
-                displayPrice(cached, true);
-                statusEl.innerHTML = '✓ Usando datos en caché (cierre del día anterior)';
-                statusEl.classList.remove('loading', 'error');
-                statusEl.classList.add('success');
-                return;
-            }
-
-            // Si no hay cache, obtener del API
+        async function fetchPrice() {
             try {
-                statusEl.innerHTML = '<span class="spinner"></span> Obteniendo precio del API...';
-                statusEl.classList.add('loading');
+                console.log('🔄 Obteniendo precio del API...');
                 
                 const response = await fetch(
-                    `https://finnhub.io/api/v1/quote?symbol=${TICKER}&token=${API_KEY}`
+                    `https://finnhub.io/api/v1/quote?symbol=${TICKER}&token=${API_KEY}`,
+                    { signal: AbortSignal.timeout(10000) }
                 );
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const data = await response.json();
-                
-                if (!data.c) {
-                    throw new Error('No price data received');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
 
-                const priceData = {
-                    price: data.c,
-                    timestamp: Date.now()
-                };
+                const data = await response.json();
 
+                if (!data.c || data.c === undefined) {
+                    throw new Error('No price data in response');
+                }
+
+                const price = parseFloat(data.c);
+                
+                if (isNaN(price) || price <= 0) {
+                    throw new Error('Invalid price value');
+                }
+
+                console.log(`✅ Precio obtenido del API: €${price.toFixed(2)}`);
+                
                 // Guardar en cache
-                cachePriceData(priceData);
-                displayPrice(priceData, false);
+                savePriceCache(price);
+                updatePriceDisplay(price, 'api');
                 
-                statusEl.innerHTML = '✓ Datos cargados correctamente';
-                statusEl.classList.remove('loading', 'error');
-                statusEl.classList.add('success');
-                
+                return price;
+
             } catch (error) {
-                console.error('Error al obtener precio:', error);
+                console.warn('⚠️ Error al obtener del API:', error.message);
                 
-                statusEl.innerHTML = `⚠️ Error al cargar: ${error.message}. Usando datos de demostración.`;
-                statusEl.classList.remove('loading');
-                statusEl.classList.add('error');
-                
-                // Datos de demostración si falla el API
-                displayPrice({ price: 12.52, timestamp: Date.now() }, false);
+                // Intentar recuperar del cache
+                const cached = getPriceCache();
+                if (cached && cached.price) {
+                    console.log(`📦 Usando precio en caché: €${cached.price.toFixed(2)}`);
+                    updatePriceDisplay(cached.price, 'cache');
+                    return cached.price;
+                }
+
+                // Si no hay cache, usar precio fallback manual
+                console.log(`🔨 Usando precio fallback manual: €${FALLBACK_PRICE}`);
+                updatePriceDisplay(FALLBACK_PRICE, 'fallback');
+                return FALLBACK_PRICE;
             }
         }
 
         /**
-         * Obtiene el precio del cache local
+         * Guarda el precio en localStorage
          */
-        function getCachedPrice() {
+        function savePriceCache(price) {
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify({
+                    price: price,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {
+                console.error('Error al guardar cache:', e);
+            }
+        }
+
+        /**
+         * Recupera el precio del caché
+         */
+        function getPriceCache() {
             try {
                 const cached = localStorage.getItem(CACHE_KEY);
-                if (!cached) return null;
-
-                const data = JSON.parse(cached);
-                const now = Date.now();
-
-                // Verificar si está expirado
-                if (now - data.timestamp > CACHE_DURATION) {
-                    localStorage.removeItem(CACHE_KEY);
-                    return null;
-                }
-
-                return data;
+                return cached ? JSON.parse(cached) : null;
             } catch (e) {
                 console.error('Error al leer cache:', e);
                 return null;
@@ -324,80 +638,159 @@
         }
 
         /**
-         * Guarda el precio en cache local
+         * Actualiza la visualización del precio y upside
          */
-        function cachePriceData(data) {
-            try {
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-            } catch (e) {
-                console.error('Error al guardar cache:', e);
+        function updatePriceDisplay(price, source) {
+            const upside = ((FAIR_VALUE - price) / price * 100).toFixed(1);
+            const isPositive = upside > 0;
+
+            // Actualizar precio en header
+            document.getElementById('currentPrice').textContent = `€${price.toFixed(2)}`;
+            
+            // Actualizar upside en header
+            const upsideEl = document.getElementById('upsideValue');
+            upsideEl.textContent = `${isPositive ? '+' : ''}${upside}%`;
+            upsideEl.classList.toggle('negative', !isPositive);
+
+            // Actualizar displays en contenido
+            document.getElementById('priceDisplay').textContent = `€${price.toFixed(2)}`;
+            const displayUpside = document.getElementById('upsideDisplay');
+            displayUpside.textContent = `${isPositive ? '+' : ''}${upside}%`;
+            displayUpside.classList.toggle('negative', !isPositive);
+
+            // Actualizar Base Case upside
+            document.getElementById('baseCaseUpside').textContent = `${isPositive ? '+' : ''}${upside}%`;
+            document.getElementById('baseCaseUpside').classList.toggle('negative', !isPositive);
+
+            // Actualizar recomendación
+            document.getElementById('priceRecommendation').textContent = `€${price.toFixed(2)}`;
+            const recUpside = document.getElementById('upsideRecommendation');
+            recUpside.textContent = `${isPositive ? '+' : ''}${upside}%`;
+            recUpside.classList.toggle('negative', !isPositive);
+
+            // Actualizar estado del API
+            updateApiStatus(source);
+
+            // Guardar datos para index principal
+            saveResearchData(price, upside);
+
+            // Actualizar timestamp
+            updateTimestamp();
+        }
+
+        /**
+         * Actualiza el indicador de estado del API
+         */
+        function updateApiStatus(source) {
+            const status = document.getElementById('apiStatus');
+            const ticker = document.getElementById('priceTicker');
+
+            switch (source) {
+                case 'api':
+                    status.textContent = '✓ Datos en vivo desde API';
+                    status.className = 'api-indicator';
+                    ticker.classList.remove('error');
+                    break;
+                case 'cache':
+                    status.textContent = '📦 Datos en caché';
+                    status.className = 'api-indicator';
+                    ticker.classList.remove('error');
+                    break;
+                case 'fallback':
+                    status.textContent = '🔨 Precio manual (fallback)';
+                    status.className = 'api-indicator fallback';
+                    ticker.classList.add('error');
+                    break;
+                default:
+                    status.textContent = '⏳ Actualizando...';
+                    status.className = 'api-indicator';
             }
         }
 
         /**
-         * Muestra el precio en la página
+         * Actualiza el timestamp de última actualización
          */
-        function displayPrice(priceData, fromCache) {
-            const price = priceData.price;
-            const upside = ((FAIR_VALUE - price) / price * 100).toFixed(1);
-            const upsideIsPositive = upside > 0;
-
-            // Actualizar KPIs
-            document.getElementById('ticker').textContent = TICKER;
-            document.getElementById('currentPrice').textContent = `€${price.toFixed(2)}`;
-            document.getElementById('fairValue').textContent = `€${FAIR_VALUE.toFixed(2)}`;
-            
-            const upsideEl = document.getElementById('upside');
-            upsideEl.textContent = `${upside > 0 ? '+' : ''}${upside}%`;
-            upsideEl.classList.toggle('positive', upsideIsPositive);
-            upsideEl.classList.toggle('negative', !upsideIsPositive);
-
-            // Fecha
-            const date = new Date(priceData.timestamp);
-            const dateStr = date.toLocaleDateString('es-ES', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+        function updateTimestamp() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
-            document.getElementById('priceDate').textContent = `Cierre: ${dateStr}`;
-            document.getElementById('lastUpdate').textContent = dateStr;
-
-            // Guardar datos en localStorage para el index principal
-            saveResearchData({
-                ticker: TICKER,
-                company: 'Puuilo',
-                sector: 'Retail - Home Décor & Hobby',
-                currentPrice: price,
-                fairValue: FAIR_VALUE,
-                upside: upside,
-                riskLevel: 'Medio',
-                date: dateStr,
-                type: 'long-value-growth'
-            });
+            document.getElementById('lastUpdateTime').textContent = `Última actualización: ${timeStr}`;
         }
 
         /**
-         * Guarda los datos de la investigación en localStorage
-         * para que el index principal pueda leerlos
+         * Guarda datos en localStorage para el index principal
          */
-        function saveResearchData(data) {
+        function saveResearchData(price, upside) {
             try {
+                const data = {
+                    ticker: TICKER,
+                    company: 'Puuilo',
+                    sector: 'Retail - Home Décor & Hobby',
+                    currentPrice: parseFloat(price),
+                    fairValue: FAIR_VALUE,
+                    upside: parseFloat(upside),
+                    riskLevel: 'Medio',
+                    date: new Date().toLocaleDateString('es-ES', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    type: 'long-value-growth',
+                    path: './puuilo/index.html'
+                };
                 localStorage.setItem('research_puuilo', JSON.stringify(data));
-                console.log('✓ Datos guardados para index principal:', data);
+                console.log('💾 Datos guardados para index principal');
             } catch (e) {
                 console.error('Error al guardar datos:', e);
             }
         }
 
+        /**
+         * Inicia el ciclo de actualización
+         */
+        function initializeAndSchedule() {
+            // Primera actualización
+            fetchPrice();
+
+            // Mostrar próxima actualización
+            updateNextUpdateTime();
+
+            // Actualizar cada 1 hora
+            setInterval(() => {
+                console.log('⏰ Ciclo de actualización automática (1 hora)');
+                fetchPrice();
+                updateNextUpdateTime();
+            }, UPDATE_INTERVAL);
+        }
+
+        /**
+         * Muestra cuándo será la próxima actualización
+         */
+        function updateNextUpdateTime() {
+            const nextUpdate = new Date(Date.now() + UPDATE_INTERVAL);
+            const timeStr = nextUpdate.toLocaleString('es-ES', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const dataStatus = document.getElementById('dataStatus');
+            dataStatus.innerHTML = `✓ Próxima actualización en 1 hora`;
+        }
+
         // ============================================
-        // INICIALIZAR AL CARGAR LA PÁGINA
+        // INICIALIZAR AL CARGAR
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            getPrice();
+            console.log('🚀 Inicializando Puuilo Dynamic Research...');
+            initializeAndSchedule();
         });
 
-        // Opcional: Recargar cada 30 minutos
-        // setInterval(getPrice, 30 * 60 * 1000);
+        // Actualizar cada 30 segundos el timestamp (cosmético)
+        setInterval(updateTimestamp, 30000);
     </script>
 </body>
 </html>
