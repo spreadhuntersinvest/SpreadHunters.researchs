@@ -356,6 +356,7 @@
         <header>
             <h1>📊 Investment Research</h1>
             <p>Análisis fundamental de situaciones especiales de inversión</p>
+            <p style="font-size: 0.95em; margin-top: 10px;">Precios actualizados dinámicamente cada 1 hora</p>
         </header>
 
         <!-- SECCIÓN DE FILTROS -->
@@ -378,7 +379,7 @@
 
         <footer>
             <p>© 2026 Investment Research. Análisis independiente. | <a href="#">Disclaimer</a></p>
-            <p>Datos actualizados dinámicamente desde cada investigación</p>
+            <p>Datos actualizados dinámicamente cada 1 hora desde Finnhub API</p>
         </footer>
     </div>
 
@@ -470,13 +471,15 @@
                         }
                         
                         loadingCount--;
-                        document.body.removeChild(iframe);
+                        if (document.body.contains(iframe)) {
+                            document.body.removeChild(iframe);
+                        }
                         
                         if (loadingCount === 0) {
                             renderFilters();
                             renderResults();
                         }
-                    }, 1000); // Esperar a que se guarden los datos
+                    }, 2000); // Esperar a que se guarden los datos
                 };
                 
                 document.body.appendChild(iframe);
@@ -540,7 +543,7 @@
 
             if (filtered.length === 0) {
                 if (researchesData.length === 0) {
-                    container.innerHTML = `<div class="loading-message"><span class="spinner-small"></span>Cargando investigaciones...</div>`;
+                    container.innerHTML = `<div class="loading-message"><span class="spinner-small"></span>Cargando investigaciones dinámicamente...</div>`;
                 } else {
                     container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
                 }
@@ -573,7 +576,7 @@
                                         <div class="card-sector">${item.sector}</div>
                                         <div class="card-upside">
                                             <span class="${item.upside > 0 ? 'upside-positive' : 'upside-negative'}">
-                                                ${item.upside > 0 ? '+' : ''}${item.upside}%
+                                                ${item.upside > 0 ? '+' : ''}${item.upside.toFixed(1)}%
                                             </span>
                                         </div>
                                     </div>
@@ -607,8 +610,15 @@
         // INICIALIZAR
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Cargando portal de investigaciones...');
             loadResearchesData();
         });
+
+        // Recargar datos cada 1 hora (opcional)
+        // setInterval(() => {
+        //     console.log('⏰ Actualizando datos (1 hora)...');
+        //     loadResearchesData();
+        // }, 60 * 60 * 1000);
     </script>
 </body>
 </html>
