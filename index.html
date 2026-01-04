@@ -11,10 +11,22 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a2332;
+            --bg-tertiary: #1a2538;
+            --text-primary: #00d7ff;
+            --text-secondary: #d0d8e0;
+            --text-tertiary: #b0c4de;
+            --accent-positive: #90ee90;
+            --accent-warning: #ffa500;
+            --accent-negative: #ff6b6b;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            color: var(--text-secondary);
             min-height: 100vh;
             padding: 20px;
         }
@@ -26,7 +38,7 @@
 
         header {
             text-align: center;
-            color: white;
+            color: var(--text-primary);
             margin-bottom: 40px;
             padding-top: 40px;
         }
@@ -34,27 +46,33 @@
         header h1 {
             font-size: 3em;
             margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 2px 10px rgba(0, 215, 255, 0.15);
+            font-weight: 700;
+            letter-spacing: -1px;
         }
 
         header p {
-            font-size: 1.2em;
+            font-size: 1.1em;
+            color: var(--text-tertiary);
             opacity: 0.95;
+            font-weight: 300;
         }
 
         /* FILTROS */
         .filters-section {
-            background: white;
+            background: rgba(26, 35, 50, 0.8);
+            border: 1px solid rgba(0, 215, 255, 0.15);
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
         }
 
         .filters-title {
             font-size: 1.1em;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -63,46 +81,51 @@
 
         .filters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
         }
 
         .filter-btn {
-            padding: 10px 16px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            color: #333;
+            padding: 10px 14px;
+            border: 1.5px solid rgba(0, 215, 255, 0.3);
+            background: rgba(26, 35, 50, 0.6);
+            color: var(--text-tertiary);
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.95em;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn:hover {
-            border-color: #667eea;
-            background: #f5f7ff;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
-        }
-
-        .clear-filters {
-            padding: 10px 16px;
-            background: #f5f5f5;
-            color: #666;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
             font-size: 0.9em;
             transition: all 0.3s ease;
         }
 
+        .filter-btn:hover {
+            border-color: var(--text-primary);
+            background: rgba(0, 215, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: rgba(0, 215, 255, 0.15);
+            color: var(--text-primary);
+            border-color: var(--text-primary);
+            box-shadow: 0 0 15px rgba(0, 215, 255, 0.2);
+        }
+
+        .clear-filters {
+            padding: 10px 16px;
+            background: rgba(176, 196, 222, 0.15);
+            color: var(--text-tertiary);
+            border: 1px solid rgba(176, 196, 222, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
         .clear-filters:hover {
-            background: #e0e0e0;
+            background: rgba(176, 196, 222, 0.25);
+            color: var(--text-secondary);
+            border-color: rgba(176, 196, 222, 0.5);
         }
 
         .filters-actions {
@@ -123,7 +146,7 @@
             gap: 12px;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 2px solid rgba(0, 215, 255, 0.2);
         }
 
         .investment-type-icon {
@@ -131,19 +154,21 @@
         }
 
         .investment-type-title {
-            color: white;
+            color: var(--text-primary);
             font-size: 1.8em;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .investment-type-count {
             margin-left: auto;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 12px;
+            background: rgba(0, 215, 255, 0.15);
+            padding: 6px 14px;
             border-radius: 20px;
-            color: white;
-            font-size: 0.95em;
+            color: var(--text-primary);
+            font-size: 0.9em;
             font-weight: 600;
+            border: 1px solid rgba(0, 215, 255, 0.3);
         }
 
         .research-grid {
@@ -154,67 +179,76 @@
         }
 
         .research-card {
-            background: white;
+            background: rgba(26, 35, 50, 0.6);
+            border: 1px solid rgba(0, 215, 255, 0.15);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            text-decoration: none; /* Quitamos subrayado del enlace */
+            text-decoration: none;
         }
 
         .research-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 215, 255, 0.2);
+            border-color: rgba(0, 215, 255, 0.4);
         }
 
         .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, rgba(0, 215, 255, 0.15) 0%, rgba(0, 215, 255, 0.05) 100%);
+            color: var(--text-primary);
             padding: 25px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            border-bottom: 1px solid rgba(0, 215, 255, 0.1);
         }
 
         .card-ticker {
-            font-size: 0.85em;
-            opacity: 0.9;
+            font-size: 0.8em;
+            opacity: 0.8;
             margin-bottom: 8px;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
+            color: var(--text-tertiary);
+            font-weight: 600;
         }
 
         .card-company {
-            font-size: 1.6em;
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
         .card-sector {
-            font-size: 0.9em;
-            opacity: 0.85;
+            font-size: 0.85em;
+            opacity: 0.8;
             margin-bottom: 15px;
+            color: var(--text-tertiary);
         }
 
         .card-upside {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-weight: 600;
+            background: transparent;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 700;
             display: inline-block;
             font-size: 0.95em;
+            border: 1px solid var(--accent-positive);
+            color: var(--accent-positive);
         }
 
         .upside-positive {
-            color: #4ade80;
+            color: var(--accent-positive);
         }
 
         .upside-negative {
-            color: #fca5a5;
+            color: var(--accent-negative);
         }
 
         .card-body {
@@ -232,9 +266,9 @@
         .metric {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             font-size: 0.9em;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(0, 215, 255, 0.08);
         }
 
         .metric:last-child {
@@ -242,29 +276,30 @@
         }
 
         .metric-label {
-            color: #666;
+            color: var(--text-tertiary);
             font-weight: 500;
         }
 
         .metric-value {
-            color: #333;
+            color: var(--text-secondary);
             font-weight: 600;
         }
 
         .card-date {
             font-size: 0.8em;
-            color: #999;
+            color: var(--text-tertiary);
             margin-bottom: 15px;
+            opacity: 0.75;
         }
 
         .card-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
+            background: rgba(0, 215, 255, 0.15);
+            color: var(--text-primary);
+            border: 1px solid rgba(0, 215, 255, 0.3);
             padding: 12px 20px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.95em;
+            font-size: 0.9em;
             font-weight: 600;
             transition: all 0.3s ease;
             text-align: center;
@@ -272,32 +307,39 @@
         }
 
         .card-button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
+            background: rgba(0, 215, 255, 0.25);
+            border-color: rgba(0, 215, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 215, 255, 0.15);
         }
 
         .no-results {
             text-align: center;
-            color: white;
+            color: var(--text-tertiary);
             padding: 40px 20px;
         }
 
         .no-results h3 {
             font-size: 1.3em;
             margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         footer {
             text-align: center;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-tertiary);
             padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(0, 215, 255, 0.1);
             font-size: 0.9em;
         }
 
         footer a {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary);
             text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        footer a:hover {
+            opacity: 0.8;
         }
 
         @media (max-width: 768px) {
@@ -362,15 +404,15 @@
         // CONFIGURACIÓN DE TIPOS DE INVERSIÓN
         // ============================================
         const investmentTypes = {
-            'long-value-growth': { name: 'Long Value-Growth', icon: '📈', description: 'Compañías con crecimiento sólido', color: '#667eea' },
-            'spin-offs': { name: 'Spin-offs', icon: '🔀', description: 'Separación de unidades', color: '#8b5cf6' },
-            'shorts-situations': { name: 'Short Situations', icon: '⬇️', description: 'Oportunidades de venta corta', color: '#ef4444' },
-            'uplisting': { name: 'Uplisting', icon: '⬆️', description: 'Cambios de bolsa/índice', color: '#10b981' },
-            'demergers': { name: 'Demergers', icon: '📊', description: 'Escisiones de empresas', color: '#f59e0b' },
-            'tender-offers': { name: 'Tender Offers', icon: '🎯', description: 'Ofertas públicas', color: '#ec4899' },
-            'turnaround': { name: 'Turnaround', icon: '🔄', description: 'Empresas en recuperación', color: '#06b6d4' },
-            'takeover': { name: 'Takeover', icon: '🏢', description: 'Adquisiciones y fusiones', color: '#6366f1' },
-            'odd-lots': { name: 'Odd Lots', icon: '🎲', description: 'Pequeños números de acciones', color: '#a78bfa' }
+            'long-value-growth': { name: 'Long Value-Growth', icon: '📈', description: 'Compañías con crecimiento sólido', color: '#00d7ff' },
+            'spin-offs': { name: 'Spin-offs', icon: '🔀', description: 'Separación de unidades', color: '#00d7ff' },
+            'shorts-situations': { name: 'Short Situations', icon: '⬇️', description: 'Oportunidades de venta corta', color: '#ff6b6b' },
+            'uplisting': { name: 'Uplisting', icon: '⬆️', description: 'Cambios de bolsa/índice', color: '#90ee90' },
+            'demergers': { name: 'Demergers', icon: '📊', description: 'Escisiones de empresas', color: '#ffa500' },
+            'tender-offers': { name: 'Tender Offers', icon: '🎯', description: 'Ofertas públicas', color: '#00d7ff' },
+            'turnaround': { name: 'Turnaround', icon: '🔄', description: 'Empresas en recuperación', color: '#ffa500' },
+            'takeover': { name: 'Takeover', icon: '🏢', description: 'Adquisiciones y fusiones', color: '#00d7ff' },
+            'odd-lots': { name: 'Odd Lots', icon: '🎲', description: 'Pequeños números de acciones', color: '#b0c4de' }
         };
 
         // ============================================
@@ -396,7 +438,7 @@
                 type: 'turnaround',
                 ticker: 'QEPC',
                 company: 'Q.E.P. Co., Inc.',
-                sector: 'Herramientas y Accesorios ',
+                sector: 'Herramientas y Accesorios',
                 fairValue: '€45.83',
                 currentPrice: '€38',
                 upside: '+20.6%',
@@ -501,4 +543,3 @@
     </script>
 </body>
 </html>
-
