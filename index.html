@@ -47,7 +47,7 @@
        header {
     position: relative;
     text-align: center;
-    padding: 0px 0px;  /* ← SIN padding para aprovechar todo el espacio */
+    padding: 0px 0px 20px 0px;  /* ← Solo padding inferior */
     background: linear-gradient(135deg, rgba(15, 20, 25, 0.95) 0%, rgba(26, 35, 50, 0.95) 100%);
     border-bottom: 2px solid rgba(0, 215, 255, 0.2);
     margin-bottom: 40px;
@@ -58,17 +58,19 @@
 }
 
 header img {
-    max-width: 1270px;  /* ← EXACTO: 1270px */
+    max-width: 1270px;
     width: 100%;
-    height: 238px;  /* ← EXACTO: 238px */
-    object-fit: contain;  /* ← Sin distorsión */
+    height: 238px;
+    object-fit: contain;
     margin: 0;
     display: block;
     filter: brightness(0.95) contrast(1.1);
 }
 
 header p {
-    display: none;  /* ← OPCIONAL: oculta el subtítulo si no lo necesitas */
+    color: #b0c4de;
+    margin: 10px 0 0 0;
+    font-size: 0.95em;
 }
         /* FILTROS */
         .filters-section {
