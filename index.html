@@ -176,6 +176,8 @@ header p:hover {
             border-color: var(--text-primary);
             background: rgba(0, 215, 255, 0.1);
             color: var(--text-primary);
+            transform: scale(1.05);  /* ← NUEVO */
+            box-shadow: 0 5px 15px rgba(0, 215, 255, 0.15);  /* ← NUEVO */
         }
 
         .filter-btn.active {
@@ -267,9 +269,9 @@ header p:hover {
         }
 
         .research-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 215, 255, 0.2);
-            border-color: rgba(0, 215, 255, 0.4);
+            transform: translateY(-8px) scale(1.02);  /* ← AÑADE scale(1.02) */
+            box-shadow: 0 20px 60px rgba(0, 215, 255, 0.25);  /* ← Aumenta opacidad */
+            border-color: rgba(0, 215, 255, 0.5);  /* ← Más visible */
         }
 
         .card-header {
