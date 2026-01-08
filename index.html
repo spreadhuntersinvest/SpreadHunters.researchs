@@ -44,10 +44,10 @@
             margin: 0 auto;
         }
 
-        header {
+       header {
     position: relative;
     text-align: center;
-    padding: 80px 20px;  /* ← AUMENTADO de 60px a 80px */
+    padding: 60px 20px;
     background: linear-gradient(135deg, rgba(15, 20, 25, 0.95) 0%, rgba(26, 35, 50, 0.95) 100%);
     border-bottom: 2px solid rgba(0, 215, 255, 0.2);
     margin-bottom: 40px;
@@ -55,13 +55,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;  /* ← NUEVO: altura mínima */
 }
 
 header img {
-    max-width: 90%;  /* ← Ocupa más espacio horizontalmente */
+    max-width: 100%;  /* ← Ocupa todo el ancho disponible */
     width: 100%;
-    height: auto;  /* ← Mantiene aspecto sin distorsionar */
+    aspect-ratio: 16 / 6;  /* ← CLAVE: 16:6 = muy alargado horizontalmente */
+    object-fit: contain;  /* ← Mantiene la imagen sin distorsionar */
     margin: 0 auto 30px;
     display: block;
     filter: brightness(0.95) contrast(1.1);
