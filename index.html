@@ -47,7 +47,7 @@
        header {
     position: relative;
     text-align: center;
-    padding: 30px 20px;  /* ← Reducido padding */
+    padding: 60px 20px;
     background: linear-gradient(135deg, rgba(15, 20, 25, 0.95) 0%, rgba(26, 35, 50, 0.95) 100%);
     border-bottom: 2px solid rgba(0, 215, 255, 0.2);
     margin-bottom: 40px;
@@ -58,19 +58,19 @@
 }
 
 header img {
-    max-width: 800px;  /* ← FIJO: 800px máximo */
+    max-width: 100%;
     width: 100%;
-    height: 200px;  /* ← FIJO: 200px de altura */
-    object-fit: contain;  /* ← Sin distorsión */
-    margin: 0 auto 20px;
+    aspect-ratio: 20 / 5;  /* ← Más alargado aún (20:5) */
+    object-fit: contain;
+    margin: 0 auto 30px;
     display: block;
     filter: brightness(0.95) contrast(1.1);
 }
 
 header p {
     color: #b0c4de;
-    margin-top: 15px;
-    font-size: 1em;
+    margin-top: 20px;
+    font-size: 1.1em;
     margin-bottom: 0;
 }
         /* FILTROS */
