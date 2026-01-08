@@ -44,20 +44,19 @@
             margin: 0 auto;
         }
 
-      header {
+     header {
     position: relative;
     text-align: center;
     padding: 0px 0px;
     background: linear-gradient(135deg, rgba(15, 20, 25, 0.95) 0%, rgba(26, 35, 50, 0.95) 100%);
     border-bottom: 2px solid rgba(0, 215, 255, 0.2);
-    margin-bottom: 40px;
+    margin-bottom: 20px;  /* ← REDUCIDO de 40px a 20px */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-/* ← NUEVO: Degradado que suaviza los bordes */
 header::before {
     content: '';
     position: absolute;
@@ -71,7 +70,7 @@ header::before {
         rgba(15, 20, 25, 0) 50%,
         rgba(15, 20, 25, 0.3) 100%
     );
-    pointer-events: none;  /* Permite clics a través */
+    pointer-events: none;
     z-index: 1;
 }
 
@@ -80,7 +79,7 @@ header img {
     z-index: 0;
     width: 100%;
     max-width: 1200px;
-    height: 238px;
+    height: 150px;  /* ← REDUCIDO de 238px a 150px */
     object-fit: contain;
     margin: 0;
     display: block;
@@ -91,10 +90,10 @@ header p {
     position: relative;
     z-index: 2;
     color: #b0c4de;
-    margin-top: 10px;
-    font-size: 1em;
+    margin-top: 5px;  /* ← REDUCIDO de 10px a 5px */
+    font-size: 0.9em;  /* ← REDUCIDO de 1em a 0.9em */
     margin-bottom: 0;
-    padding: 0 20px 20px 20px;
+    padding: 0 20px 10px 20px;  /* ← REDUCIDO padding inferior */
 }
         /* FILTROS */
         .filters-section {
