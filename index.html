@@ -76,8 +76,7 @@
     z-index: 1;
     }
 
-    header img 
-        {
+   header img {
     position: relative;
     z-index: 0;
     width: 100%;
@@ -87,9 +86,28 @@
     margin: 0;
     display: block;
     filter: brightness(0.95) contrast(1.1);
-    border-radius: 6px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
-    }
+    
+    /* ← NUEVO: Bordes redondeados */
+    border-radius: 12px;
+    
+    /* ← NUEVO: Sombra que integra con fondo negro */
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.2),  /* Sombra interior */
+        0 10px 30px rgba(0, 0, 0, 0.5),     /* Sombra exterior profunda */
+        0 0 40px rgba(50, 184, 198, 0.1);   /* Glow teal sutil */
+    
+    /* ← Transición suave */
+    transition: all 0.3s ease;
+}
+
+/* ← BONUS: Efecto al hover */
+header img:hover {
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.15),
+        0 15px 40px rgba(0, 0, 0, 0.6),
+        0 0 50px rgba(50, 184, 198, 0.15);
+    filter: brightness(1) contrast(1.15);
+}
 
 header p {
     position: relative;
