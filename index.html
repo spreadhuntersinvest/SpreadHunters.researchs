@@ -539,6 +539,77 @@ header p:hover {
                 margin-top: 10px;
             }
         }
+        /* RISK BADGES */
+.risk-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+.risk-bajo { background: rgba(144, 238, 144, 0.2); color: #90ee90; }
+.risk-medio { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+.risk-alto { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+
+/* LÍNEA SEPARADORA */
+.card-body {
+    padding: 20px;
+    border-top: 1px solid rgba(0, 215, 255, 0.15);
+}
+
+/* UPSIDE DESTACADO */
+.card-upside {
+    background: rgba(0, 215, 255, 0.1);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    display: block;
+    font-size: 1.1em;
+    border: 1px solid rgba(0, 215, 255, 0.3);
+    color: var(--accent-positive);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+/* COLOR BAR */
+.research-card { position: relative; }
+.research-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--text-primary);
+    opacity: 0.3;
+}
+
+/* CATEGORY CHIP */
+.card-category {
+    display: inline-block;
+    background: rgba(0, 215, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* BOTÓN MEJORADO */
+.card-button {
+    background: rgba(0, 215, 255, 0.2);
+    border: 1.5px solid rgba(0, 215, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.card-button:hover {
+    background: rgba(0, 215, 255, 0.35);
+    border-color: rgba(0, 215, 255, 0.6);
+    transform: translateY(-2px);
+}
+        
     </style>
 </head>
 <body>
@@ -715,24 +786,25 @@ header p:hover {
                         </div>
                         <div class="research-grid">
                             ${items.map(item => `
-                                <a href="${item.path}" class="research-card">
-                                    <div class="card-header">
-                                        <div class="card-ticker">${item.ticker}</div>
-                                        <div class="card-company">${item.company}</div>
-                                        <div class="card-sector">${item.sector}</div>
-                                        <div class="card-upside"><span class="upside-positive">${item.upside}</span></div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-metrics">
-                                            <div class="metric"><span class="metric-label">Precio Actual</span><span class="metric-value">${item.currentPrice}</span></div>
-                                            <div class="metric"><span class="metric-label">Fair Value</span><span class="metric-value">${item.fairValue}</span></div>
-                                            <div class="metric"><span class="metric-label">Riesgo</span><span class="metric-value">${item.riskLevel}</span></div>
-                                        </div>
-                                        <div class="card-date">Análisis: ${item.date}</div>
-                                        <span class="card-button">Ver Análisis Completo →</span>
-                                    </div>
-                                </a>
-                            `).join('')}
+    <a href="${item.path}" class="research-card">
+        <div class="card-header">
+            <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
+            <div class="card-ticker">${item.ticker}</div>
+            <div class="card-company">${item.company}</div>
+            <div class="card-sector">${item.sector}</div>
+            <div class="card-upside">⬆️ ${item.upside} UPSIDE</div>
+        </div>
+        <div class="card-body">
+            <div class="card-metrics">
+                <div class="metric"><span class="metric-label">Precio Actual</span><span class="metric-value">${item.currentPrice}</span></div>
+                <div class="metric"><span class="metric-label">Fair Value</span><span class="metric-value">${item.fairValue}</span></div>
+                <div class="metric"><span class="metric-label">Riesgo</span><span class="metric-value"><span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">${item.riskLevel}</span></span></div>
+            </div>
+            <div class="card-date">Análisis: ${item.date}</div>
+            <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
+        </div>
+    </a>
+`).join('')}}
                         </div>
                     </div>
                 `;
