@@ -696,6 +696,104 @@ header p:hover {
     border-color: rgba(0, 215, 255, 0.6);
     transform: translateY(-2px);
 }
+        /* INDICADORES DE LA TARJETA - GRID 2x2 */
+.card-indicators {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 215, 255, 0.15);
+}
+
+.indicator {
+    background: rgba(0, 215, 255, 0.08);
+    border: 1px solid rgba(0, 215, 255, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.indicator-label {
+    font-size: 0.7em;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    opacity: 0.85;
+}
+
+.indicator-value {
+    font-size: 1.05em;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.indicator-subtext {
+    font-size: 0.8em;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+    opacity: 0.7;
+}
+
+/* COLORES DINÁMICOS POR UPSIDE */
+.upside-very-positive {
+    background: rgba(144, 238, 144, 0.15) !important;
+    border-color: rgba(144, 238, 144, 0.3) !important;
+}
+
+.upside-very-positive .indicator-value {
+    color: #00ff00;
+}
+
+.upside-positive {
+    background: rgba(144, 238, 144, 0.1) !important;
+    border-color: rgba(144, 238, 144, 0.2) !important;
+}
+
+.upside-positive .indicator-value {
+    color: #90ee90;
+}
+
+.upside-negative {
+    background: rgba(255, 165, 0, 0.1) !important;
+    border-color: rgba(255, 165, 0, 0.2) !important;
+}
+
+.upside-negative .indicator-value {
+    color: #ffa500;
+}
+
+.upside-very-negative {
+    background: rgba(255, 107, 107, 0.15) !important;
+    border-color: rgba(255, 107, 107, 0.3) !important;
+}
+
+.upside-very-negative .indicator-value {
+    color: #ff4444;
+}
+
+/* INDICADORES ESPECIALES */
+.indicator-date {
+    background: rgba(176, 196, 222, 0.1);
+    border-color: rgba(176, 196, 222, 0.2);
+}
+
+.indicator-date .indicator-value {
+    color: var(--text-tertiary);
+    font-size: 0.95em;
+}
+
+.indicator-target {
+    background: rgba(0, 215, 255, 0.12);
+    border-color: rgba(0, 215, 255, 0.25);
+}
+
+.indicator-target .indicator-value {
+    color: var(--text-primary);
+}
         
     </style>
 </head>
@@ -744,6 +842,92 @@ header p:hover {
 
     <script>
         // ============================================
+// CONFIGURACIÓN API FINNHUB
+// ============================================
+const FINNHUB_API_KEY = 'YOUR_FINNHUB_KEY_HERE';  // ← REEMPLAZA CON TU KEY
+const FINNHUB_BASE_URL = 'https://finnhub.io/api/v1/quote';
+
+// ============================================
+// FUNCIÓN: Calcular upside actual automático
+// ============================================
+function calculateCurrentUpside(currentPriceRaw, fairValueRaw) {
+    if (!currentPriceRaw || !fairValueRaw || currentPriceRaw === 0) {
+        return '—';
+    }
+    
+    const upside = ((fairValueRaw - currentPriceRaw) / currentPriceRaw) * 100;
+    const rounded = upside.toFixed(1);
+    
+    return upside >= 0 ? `+${rounded}%` : `${rounded}%`;
+}
+
+// ============================================
+// FUNCIÓN: Clasificar color según upside
+// ============================================
+function getUpsideClass(upsidePercent) {
+    const value = parseFloat(upsidePercent.replace('+', '').replace('%', ''));
+    
+    if (value >= 50) return 'upside-very-positive';
+    if (value > 0) return 'upside-positive';
+    if (value < -50) return 'upside-very-negative';
+    return 'upside-negative';
+}
+
+// ============================================
+// FUNCIÓN: Símbolo según dirección
+// ============================================
+function getUpsideSymbol(upsidePercent) {
+    const value = parseFloat(upsidePercent.replace('+', '').replace('%', ''));
+    return value >= 0 ? '📈' : '📉';
+}
+
+// ============================================
+// FUNCIÓN: Obtener precio actual (API o manual)
+// ============================================
+async function fetchCurrentPrice(research) {
+    try {
+        const response = await fetch(
+            `${FINNHUB_BASE_URL}?symbol=${research.ticker_finnhub}&token=${FINNHUB_API_KEY}`
+        );
+        
+        if (!response.ok) throw new Error('API error');
+        
+        const data = await response.json();
+        
+        if (data.c) {
+            research.currentPriceRaw = data.c;
+            research.currentPrice = `${research.currency}${data.c.toFixed(2)}`;
+            research.upsideActual = calculateCurrentUpside(
+                research.currentPriceRaw, 
+                research.fairValueRaw
+            );
+            
+            console.log(`✅ API: ${research.ticker} = ${research.currentPrice} | Upside: ${research.upsideActual}`);
+            return research;
+        }
+    } catch (error) {
+        console.warn(`⚠️ API fallo para ${research.ticker}, usando fallback manual`);
+    }
+    
+    console.log(`📌 Manual: ${research.ticker} = ${research.currentPrice} | Upside: ${research.upsideActual}`);
+    return research;
+}
+
+// ============================================
+// FUNCIÓN: Cargar todos los precios
+// ============================================
+async function loadAllPrices() {
+    try {
+        const promises = researchesData.map(r => fetchCurrentPrice(r));
+        await Promise.all(promises);
+        console.log('✅ Todos los precios cargados');
+    } catch (error) {
+        console.error('Error cargando precios:', error);
+    } finally {
+        renderResults();
+    }
+}
+        // ============================================
         // CONFIGURACIÓN DE TIPOS DE INVERSIÓN
         // ============================================
         const investmentTypes = {
@@ -759,7 +943,7 @@ header p:hover {
         };
 
         // ============================================
-        // DATOS ESTÁTICOS (Sin llamar a APIs)
+        // Array de empresas
         // ============================================
         const researchesData = [
             {
@@ -769,9 +953,19 @@ header p:hover {
                 ticker: 'PUUILO.HE',
                 company: 'Puuilo',
                 sector: 'Retail - Home Décor',
+                logo: 'images/puuilo.png',
+               // NUEVOS CAMPOS
+                thesisDate: '2026-01-15',
+                thesisPrice: '€12,52',
+                thesisPriceRaw: 12.52,
                 fairValue: '€26,62',
-                currentPrice: '€12,52',
-                upside: '+113%',
+                fairValueRaw: 26.62,
+                upsideInitial: '+113%',
+                ticker_finnhub: 'PUUILO.HE',
+                currentPrice: '€14,80',
+                currentPriceRaw: 14.80,
+                currency: '€',
+                upsideActual: '+113%',  // Se actualiza con API o manual
                 riskLevel: 'Medio',
                 date: 'Enero 2026'
             },
@@ -782,9 +976,19 @@ header p:hover {
                 ticker: 'QEPC',
                 company: 'Q.E.P. Co., Inc.',
                 sector: 'Herramientas y Accesorios',
-                fairValue: '€45.83',
-                currentPrice: '€38',
-                upside: '+20.6%',
+                logo: 'images/qep.png',
+                // NUEVOS CAMPOS
+                thesisDate: '2026-01-10',
+                thesisPrice: '$38',
+                thesisPriceRaw: 38,
+                fairValue: '$45.83',
+                fairValueRaw: 45.83,
+                upsideInitial: '+20.6%',
+                ticker_finnhub: 'QEPC',
+                currentPrice: '$41,50',
+                currentPriceRaw: 41.50,
+                currency: '$',
+                upsideActual: '+20.6%',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -795,9 +999,18 @@ header p:hover {
                 ticker: 'EDU.AX',
                 company: 'EDU Holdings Limited',
                 sector: 'Education Platform',
+                logo: 'images/edu-holdings.png',
+                thesisDate: '2026-01-12',
+                thesisPrice: 'AUD0.82',
+                thesisPriceRaw: 0.82,
                 fairValue: 'AUD2.43',
-                currentPrice: 'AUD0.82',
-                upside: '+207%',
+                fairValueRaw: 2.43,
+                upsideInitial: '+207%',
+                ticker_finnhub: 'EDU.AX',
+                currentPrice: 'AUD0.95',
+                currentPriceRaw: 0.95,
+                currency: 'AUD',
+                upsideActual: '+207%',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -806,11 +1019,20 @@ header p:hover {
                 path: './modg/index.html',
                 type: 'demergers',
                 ticker: 'MODG',
-                company: 'CALLAWAYGOLF',
+                company: 'Callaway Brands',
                 sector: 'Consumo retail',
+                logo: 'images/callaway.png',
+                thesisDate: '2026-01-08',
+                thesisPrice: '$11.88',
+                thesisPriceRaw: 11.88,
                 fairValue: '$22.88',
-                currentPrice: '$11.88',
-                upside: '+92.6%',
+                fairValueRaw: 22.88,
+                upsideInitial: '+92.6%',
+                ticker_finnhub: 'MODG',
+                currentPrice: '$12.50',
+                currentPriceRaw: 12.50,
+                currency: '$',
+                upsideActual: '+92.6%',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -821,9 +1043,18 @@ header p:hover {
                 ticker: 'TOA.WA',
                 company: 'TOYA S.A.',
                 sector: 'Herramientas y Accesorios',
+                logo: 'images/toya.png',
+                thesisDate: '2026-01-05',
+                thesisPrice: 'PLN9.26',
+                thesisPriceRaw: 9.26,
                 fairValue: 'PLN14.14',
-                currentPrice: 'PLN9.26',
-                upside: '+52.7%',
+                fairValueRaw: 14.14,
+                upsideInitial: '+52.7%',
+                ticker_finnhub: 'TOA.WA',
+                currentPrice: 'PLN9.80',
+                currentPriceRaw: 9.80,
+                currency: 'PLN',
+                upsideActual: '+52.7%',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -888,36 +1119,64 @@ header p:hover {
                     <div class="research-grid">
                         ${items.map(item => `
                             <a href="${item.path}" class="research-card">
-                                <div class="card-header">
-                                    <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
-                                    <div class="card-ticker">${item.ticker}</div>
-                                    <div class="card-company">${item.company}</div>
-                                    <div class="card-sector">${item.sector}</div>
-                                    <div class="card-upside">⬆️ ${item.upside} UPSIDE</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-metrics">
-                                        <div class="metric">
-                                            <span class="metric-label">Precio Actual</span>
-                                            <span class="metric-value">${item.currentPrice}</span>
-                                        </div>
-                                        <div class="metric">
-                                            <span class="metric-label">Fair Value</span>
-                                            <span class="metric-value">${item.fairValue}</span>
-                                        </div>
-                                        <div class="metric">
-                                            <span class="metric-label">Riesgo</span>
-                                            <span class="metric-value">
-                                                <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
-                                                    ${item.riskLevel}
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="card-date">Análisis: ${item.date}</div>
-                                    <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
-                                </div>
-                            </a>
+    <div class="card-header">
+        <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
+        <div class="card-ticker">${item.ticker}</div>
+        <div class="card-company">${item.company}</div>
+        <div class="card-sector">${item.sector}</div>
+    </div>
+    <div class="card-body">
+        <div class="card-indicators">
+            <!-- INDICADOR 1: Fecha Tesis -->
+            <div class="indicator indicator-date">
+                <div class="indicator-label">📅 Fecha Tesis</div>
+                <div class="indicator-value">${item.thesisDate}</div>
+            </div>
+            
+            <!-- INDICADOR 2: Precio Objetivo -->
+            <div class="indicator indicator-target">
+                <div class="indicator-label">🎯 Precio Objetivo</div>
+                <div class="indicator-value">${item.fairValue}</div>
+            </div>
+            
+            <!-- INDICADOR 3: Precio Actual -->
+            <div class="indicator">
+                <div class="indicator-label">💰 Precio Actual</div>
+                <div class="indicator-value">${item.currentPrice}</div>
+            </div>
+            
+            <!-- INDICADOR 4: Upside INICIAL (Manual) -->
+            <div class="indicator">
+                <div class="indicator-label">📊 Upside Inicial</div>
+                <div class="indicator-value" style="color: var(--accent-positive);">
+                    ${item.upsideInitial}
+                </div>
+                <div class="indicator-subtext">(Tesis)</div>
+            </div>
+            
+            <!-- INDICADOR 5: Upside ACTUAL (Automático) -->
+            <div class="indicator ${getUpsideClass(item.upsideActual)}" style="grid-column: 1 / -1;">
+                <div class="indicator-label">
+                    ${getUpsideSymbol(item.upsideActual)} Upside/Downside ACTUAL
+                </div>
+                <div class="indicator-value" style="font-size: 1.3em;">
+                    ${item.upsideActual}
+                </div>
+                <div class="indicator-subtext">Ahora mismo</div>
+            </div>
+        </div>
+
+        <!-- RIESGO -->
+        <div style="margin-top: 12px; text-align: center;">
+            <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
+                ⚠️ Riesgo: ${item.riskLevel}
+            </span>
+        </div>
+
+        <div class="card-date">Análisis: ${item.date}</div>
+        <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
+    </div>
+</a>
                         `).join('')}
                     </div>
                 </div>
@@ -1009,7 +1268,7 @@ header p:hover {
         document.addEventListener('DOMContentLoaded', () => {
     updateClearButton();
     renderFilters();
-    renderResults();
+    loadAllPrices();  // ← Esta línea carga precios y renderiza
 });
     </script>
 </body>
