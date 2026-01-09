@@ -1256,6 +1256,13 @@ async function loadAllPrices() {
             container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
             return;
         }
+     // ← NUEVO: Recalcular upside actual para todos
+    filtered.forEach(item => {
+        item.upsideActual = calculateCurrentUpside(
+            item.currentPriceRaw,
+            item.fairValueRaw
+        );
+    });
 
         const grouped = {};
         filtered.forEach(r => {
