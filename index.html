@@ -263,22 +263,46 @@ header p:hover {
         }
 
         .clear-filters {
-            padding: 10px 16px;
-            background: rgba(176, 196, 222, 0.15);
-            color: var(--text-tertiary);
-            border: 1px solid rgba(176, 196, 222, 0.3);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
+    padding: 10px 16px;
+    background: rgba(0, 215, 255, 0.2);
+    color: var(--text-primary);
+    border: 1.5px solid rgba(0, 215, 255, 0.4);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        .clear-filters:hover {
-            background: rgba(176, 196, 222, 0.25);
-            color: var(--text-secondary);
-            border-color: rgba(176, 196, 222, 0.5);
-        }
+.clear-filters:hover {
+    background: rgba(0, 215, 255, 0.35);
+    border-color: rgba(0, 215, 255, 0.6);
+    box-shadow: 0 0 15px rgba(0, 215, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.clear-filters:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.filters-count-badge {
+    display: inline-block;
+    background: rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85em;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
+}
 
         /* ← NUEVO: SELECTOR DE SORT */
 .sort-container {
@@ -674,7 +698,10 @@ header p:hover {
             <option value="upside-asc">Menor Upside ↑</option>
         </select>
     </div>
-    <button class="clear-filters" onclick="clearFilters()">Limpiar filtros</button>
+    <button class="clear-filters" id="clearFiltersBtn" onclick="clearFilters()" disabled>
+        🗑️ Limpiar filtros
+        <span class="filters-count-badge" id="filterCountBadge" style="display: none;">0</span>
+    </button>
 </div>
 
         <!-- RESULTADOS AGRUPADOS POR TIPO DE INVERSIÓN -->
@@ -881,32 +908,49 @@ Object.keys(grouped).forEach(typeKey => {
     `).join('');
     }
 
-    function toggleFilter(typeKey) {
+   function toggleFilter(typeKey) {
     if (activeFilters.has(typeKey)) {
         activeFilters.delete(typeKey);
     } else {
         activeFilters.add(typeKey);
     }
+    updateClearButton();
     renderResults();
     renderFilters();
-    }
+}
 
     function clearFilters() {
     activeFilters.clear();
+    updateClearButton();
     renderFilters();
     renderResults();
-    }
+}
     function handleSortChange() {
     const sortSelect = document.getElementById('sortSelect');
     sortBy = sortSelect.value;
     renderResults();
     }
+        function updateClearButton() {
+    const btn = document.getElementById('clearFiltersBtn');
+    const badge = document.getElementById('filterCountBadge');
+    const count = activeFilters.size;
+    
+    if (count === 0) {
+        btn.disabled = true;
+        badge.style.display = 'none';
+    } else {
+        btn.disabled = false;
+        badge.textContent = count;
+        badge.style.display = 'inline-block';
+    }
+}
         
         // INICIAR
         document.addEventListener('DOMContentLoaded', () => {
-            renderFilters();
-            renderResults();
-        });
+    updateClearButton();
+    renderFilters();
+    renderResults();
+});
     </script>
 </body>
 </html>
