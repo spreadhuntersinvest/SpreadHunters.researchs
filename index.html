@@ -806,6 +806,64 @@ header p:hover {
 .indicator-target .indicator-value {
     color: var(--text-primary);
 }
+        /* TOAST NOTIFICATION */
+.toast {
+    background: rgba(50, 184, 198, 0.15);
+    border: 1px solid rgba(50, 184, 198, 0.4);
+    border-left: 4px solid #32b8c6;
+    color: #32b8c6;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+    min-width: 280px;
+}
+
+.toast.success {
+    background: rgba(144, 238, 144, 0.15);
+    border-color: rgba(144, 238, 144, 0.4);
+    border-left-color: #90ee90;
+    color: #90ee90;
+}
+
+.toast.error {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: rgba(255, 107, 107, 0.4);
+    border-left-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+.toast.fadeOut {
+    animation: slideOut 0.3s ease-out forwards;
+}
         
     </style>
 </head>
@@ -851,6 +909,17 @@ header p:hover {
             <p>© 2026 Investment Research. Análisis independiente. | <a href="#">Disclaimer</a></p>
         </footer>
     </div>
+        <!-- TOAST NOTIFICATION -->
+<div id="toastContainer" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+">
+</div>
 
     <script>
         // ============================================
@@ -914,6 +983,9 @@ async function fetchCurrentPrice(research) {
                 research.fairValueRaw
             );
             
+            // ← NUEVA: Mostrar toast
+            showToast(`${research.ticker} actualizado: ${research.currentPrice}`);
+            
             console.log(`✅ API: ${research.ticker} = ${research.currentPrice} | Upside: ${research.upsideActual}`);
             return research;
         }
@@ -925,6 +997,27 @@ async function fetchCurrentPrice(research) {
     return research;
 }
 
+// ============================================
+// FUNCIÓN: Mostrar notificaciones (Toast)
+// ============================================
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? '✅' : '❌';
+    toast.innerHTML = `${icon} ${message}`;
+    
+    container.appendChild(toast);
+    
+    // Remover después de 4 segundos
+    setTimeout(() => {
+        toast.classList.add('fadeOut');
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+        
 // ============================================
 // FUNCIÓN: Cargar todos los precios
 // ============================================
