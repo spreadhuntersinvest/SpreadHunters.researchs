@@ -1104,18 +1104,18 @@ async function loadAllPrices() {
             const items = grouped[typeKey];
             
             if (sortBy === 'upside-desc') {
-                items.sort((a, b) => {
-                    const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-                    const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-                    return upsideB - upsideA;
-                });
-            } else if (sortBy === 'upside-asc') {
-                items.sort((a, b) => {
-                    const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-                    const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-                    return upsideA - upsideB;
-                });
-            }
+    items.sort((a, b) => {
+        const upsideA = parseFloat(a.upsideActual.replace('+', '').replace('%', ''));
+        const upsideB = parseFloat(b.upsideActual.replace('+', '').replace('%', ''));
+        return upsideB - upsideA;
+    });
+} else if (sortBy === 'upside-asc') {
+    items.sort((a, b) => {
+        const upsideA = parseFloat(a.upsideActual.replace('+', '').replace('%', ''));
+        const upsideB = parseFloat(b.upsideActual.replace('+', '').replace('%', ''));
+        return upsideA - upsideB;
+    });
+}
         });
 
         // RENDERIZADO
@@ -1217,16 +1217,6 @@ async function loadAllPrices() {
         }, 150);
     }
 
-        // ← NUEVA FUNCIÓN: Actualizar contador
-    function updateCounter(count) {
-        const counterElement = document.getElementById('totalCounter');
-        counterElement.textContent = count;
-        counterElement.style.transition = 'all 0.3s ease';
-        counterElement.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            counterElement.style.transform = 'scale(1)';
-        }, 150);
-    }
     function renderFilters() {
     const container = document.getElementById('filtersContainer');
     container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
