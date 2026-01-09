@@ -864,6 +864,32 @@ header p:hover {
 .toast.fadeOut {
     animation: slideOut 0.3s ease-out forwards;
 }
+        /* BADGES DE FUENTE DE PRECIO */
+.price-badge {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.75em;
+    vertical-align: middle;
+    opacity: 0.8;
+}
+
+.price-badge.api {
+    background: rgba(50, 184, 198, 0.2);
+    border: 1px solid rgba(50, 184, 198, 0.4);
+    color: #32b8c6;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.price-badge.manual {
+    background: rgba(176, 196, 222, 0.2);
+    border: 1px solid rgba(176, 196, 222, 0.4);
+    color: #b0c4de;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
         
     </style>
 </head>
@@ -983,6 +1009,9 @@ async function fetchCurrentPrice(research) {
                 research.fairValueRaw
             );
             
+            // ← NUEVA: Marcar como API
+            research.priceSource = 'api';
+            
             // ← NUEVA: Mostrar toast
             showToast(`${research.ticker} actualizado: ${research.currentPrice}`);
             
@@ -1071,6 +1100,7 @@ async function loadAllPrices() {
                 currentPriceRaw: 14.80,
                 currency: '€',
                 upsideActual: '+113%',  // Se actualiza con API o manual
+                priceSource: 'manual',
                 riskLevel: 'Medio',
                 date: 'Enero 2026'
             },
@@ -1094,6 +1124,7 @@ async function loadAllPrices() {
                 currentPriceRaw: 41.50,
                 currency: '$',
                 upsideActual: '+20.6%',
+                priceSource: 'manual',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -1116,6 +1147,7 @@ async function loadAllPrices() {
                 currentPriceRaw: 0.95,
                 currency: 'AUD',
                 upsideActual: '+207%',
+                priceSource: 'manual',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -1138,6 +1170,7 @@ async function loadAllPrices() {
                 currentPriceRaw: 12.50,
                 currency: '$',
                 upsideActual: '+92.6%',
+                priceSource: 'manual',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -1160,6 +1193,7 @@ async function loadAllPrices() {
                 currentPriceRaw: 9.80,
                 currency: 'PLN',
                 upsideActual: '+52.7%',
+                priceSource: 'manual',
                 riskLevel: 'Bajo',
                 date: 'Enero 2026'
             },
@@ -1247,9 +1281,14 @@ async function loadAllPrices() {
             
             <!-- INDICADOR 3: Precio Actual -->
             <div class="indicator">
-                <div class="indicator-label">💰 Precio Actual</div>
-                <div class="indicator-value">${item.currentPrice}</div>
-            </div>
+    <div class="indicator-label">💰 Precio Actual</div>
+    <div class="indicator-value">
+        ${item.currentPrice}
+        <span class="price-badge ${item.priceSource === 'api' ? 'api' : 'manual'}" title="${item.priceSource === 'api' ? 'Actualizado desde API' : 'Precio manual'}">
+            ${item.priceSource === 'api' ? '🌐 API' : '📌 Manual'}
+        </span>
+    </div>
+</div>
             
             <!-- INDICADOR 4: Upside INICIAL (Manual) -->
             <div class="indicator">
