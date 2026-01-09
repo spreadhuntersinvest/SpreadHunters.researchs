@@ -836,103 +836,63 @@ header p:hover {
     // ============================================
     // RENDERIZADO
     // ============================================
-    function renderResults() {
-    const container = document.getElementById('resultsContainer');
-    
-    const filtered = activeFilters.size === 0 
-        ? researchesData 
-        : researchesData.filter(r => activeFilters.has(r.type));
-
-    updateCounter(filtered.length);
-
-    if (filtered.length === 0) {
-        container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
-        return;
-    }
-
-    const grouped = {};
-    filtered.forEach(r => {
-        if (!grouped[r.type]) grouped[r.type] = [];
-        grouped[r.type].push(r);
-    });
-
-    // ← SORTING: Aplicar solo UNA VEZ (no duplicado)
-    Object.keys(grouped).forEach(typeKey => {
-        const items = grouped[typeKey];
-        
-        if (sortBy === 'upside-desc') {
-            items.sort((a, b) => {
-                const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-                const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-                return upsideB - upsideA;
-            });
-        } else if (sortBy === 'upside-asc') {
-            items.sort((a, b) => {
-                const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-                const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-                return upsideA - upsideB;
-            });
-        }
-    });
-
-    // ← RENDERIZADO: Generar HTML con tarjetas
-    container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
-        const typeInfo = investmentTypes[typeKey];
-        return `
-            <div class="investment-type-section">
-                <div class="investment-type-header">
-                    <div class="investment-type-icon">${typeInfo.icon}</div>
-                    <div class="investment-type-title">${typeInfo.name}</div>
-                    <div class="investment-type-count">${items.length} análisis</div>
-                </div>
-                <div class="research-grid">
-                    ${items.map(item => `
-                        <a href="${item.path}" class="research-card">
-                            <div class="card-header">
-                                <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
-                                <div class="card-ticker">${item.ticker}</div>
-                                <div class="card-company">${item.company}</div>
-                                <div class="card-sector">${item.sector}</div>
-                                <div class="card-upside">⬆️ ${item.upside} UPSIDE</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-metrics">
-                                    <div class="metric">
-                                        <span class="metric-label">Precio Actual</span>
-                                        <span class="metric-value">${item.currentPrice}</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-label">Fair Value</span>
-                                        <span class="metric-value">${item.fairValue}</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-label">Riesgo</span>
-                                        <span class="metric-value">
-                                            <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
-                                                ${item.riskLevel}
-                                            </span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="card-date">Análisis: ${item.date}</div>
-                                <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
-                            </div>
-                        </a>
-                    `).join('')}
-                </div>
+// ← RENDERIZADO: Generar HTML con tarjetas
+container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
+    const typeInfo = investmentTypes[typeKey];
+    return `
+        <div class="investment-type-section">
+            <div class="investment-type-header">
+                <div class="investment-type-icon">${typeInfo.icon}</div>
+                <div class="investment-type-title">${typeInfo.name}</div>
+                <div class="investment-type-count">${items.length} análisis</div>
             </div>
-        `;
-    }).join('');
+            <div class="research-grid">
+                ${items.map(item => `
+                    <a href="${item.path}" class="research-card">
+                        <div class="card-header">
+                            <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
+                            <div class="card-ticker">${item.ticker}</div>
+                            <div class="card-company">${item.company}</div>
+                            <div class="card-sector">${item.sector}</div>
+                            <div class="card-upside">⬆️ ${item.upside} UPSIDE</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Precio Actual</span>
+                                    <span class="metric-value">${item.currentPrice}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Fair Value</span>
+                                    <span class="metric-value">${item.fairValue}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Riesgo</span>
+                                    <span class="metric-value">
+                                        <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
+                                            ${item.riskLevel}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-date">Análisis: ${item.date}</div>
+                            <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
+                        </div>
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}).join('');
 
-    // ← SCROLL SUAVE: Solo si hay filtros activos
-    if (activeFilters.size > 0) {
-        setTimeout(() => {
-            document.querySelector('.investment-type-section')?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }, 100);
-    }
+// SCROLL SUAVE: Solo si hay filtros activos
+if (activeFilters.size > 0) {
+    setTimeout(() => {
+        document.querySelector('.investment-type-section')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }, 100);
 }
 
     container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
