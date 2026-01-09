@@ -851,56 +851,88 @@ header p:hover {
     }
 
     const grouped = {};
-filtered.forEach(r => {
-    if (!grouped[r.type]) grouped[r.type] = [];
-    grouped[r.type].push(r);
-});
+    filtered.forEach(r => {
+        if (!grouped[r.type]) grouped[r.type] = [];
+        grouped[r.type].push(r);
+    });
 
-// ← NUEVO: Aplicar sorting a cada grupo
-Object.keys(grouped).forEach(typeKey => {
-    const items = grouped[typeKey];
-    
-    if (sortBy === 'upside-desc') {
-        items.sort((a, b) => {
-            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-            return upsideB - upsideA;
-        });
-    } else if (sortBy === 'upside-asc') {
-        items.sort((a, b) => {
-            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-            return upsideA - upsideB;
-        });
-    }
-});
-        Object.keys(grouped).forEach(typeKey => {
-    const items = grouped[typeKey];
-    
-    if (sortBy === 'upside-desc') {
-        items.sort((a, b) => {
-            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-            return upsideB - upsideA;
-        });
-    } else if (sortBy === 'upside-asc') {
-        items.sort((a, b) => {
-            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
-            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
-            return upsideA - upsideB;
-        });
-    }
-});
+    // ← SORTING: Aplicar solo UNA VEZ (no duplicado)
+    Object.keys(grouped).forEach(typeKey => {
+        const items = grouped[typeKey];
+        
+        if (sortBy === 'upside-desc') {
+            items.sort((a, b) => {
+                const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+                const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+                return upsideB - upsideA;
+            });
+        } else if (sortBy === 'upside-asc') {
+            items.sort((a, b) => {
+                const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+                const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+                return upsideA - upsideB;
+            });
+        }
+    });
 
-// ← NUEVO: SCROLL SOLO SI HAY FILTROS ACTIVOS
-if (activeFilters.size > 0) {
-    setTimeout(() => {
-        document.querySelector('.investment-type-section')?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }, 100);
-}
+    // ← RENDERIZADO: Generar HTML con tarjetas
+    container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
+        const typeInfo = investmentTypes[typeKey];
+        return `
+            <div class="investment-type-section">
+                <div class="investment-type-header">
+                    <div class="investment-type-icon">${typeInfo.icon}</div>
+                    <div class="investment-type-title">${typeInfo.name}</div>
+                    <div class="investment-type-count">${items.length} análisis</div>
+                </div>
+                <div class="research-grid">
+                    ${items.map(item => `
+                        <a href="${item.path}" class="research-card">
+                            <div class="card-header">
+                                <div class="card-category">${typeInfo.icon} ${typeInfo.name}</div>
+                                <div class="card-ticker">${item.ticker}</div>
+                                <div class="card-company">${item.company}</div>
+                                <div class="card-sector">${item.sector}</div>
+                                <div class="card-upside">⬆️ ${item.upside} UPSIDE</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Precio Actual</span>
+                                        <span class="metric-value">${item.currentPrice}</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Fair Value</span>
+                                        <span class="metric-value">${item.fairValue}</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Riesgo</span>
+                                        <span class="metric-value">
+                                            <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
+                                                ${item.riskLevel}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-date">Análisis: ${item.date}</div>
+                                <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
+                            </div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // ← SCROLL SUAVE: Solo si hay filtros activos
+    if (activeFilters.size > 0) {
+        setTimeout(() => {
+            document.querySelector('.investment-type-section')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    }
 }
 
     container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
