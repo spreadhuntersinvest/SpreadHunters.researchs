@@ -734,7 +734,6 @@ header p:hover {
         grouped[r.type].push(r);
     });
 
-    // ← AQUÍ EMPIEZA EL TEMPLATE
     container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
         const typeInfo = investmentTypes[typeKey];
         return `
@@ -756,21 +755,32 @@ header p:hover {
                             </div>
                             <div class="card-body">
                                 <div class="card-metrics">
-                                    <div class="metric"><span class="metric-label">Precio Actual</span><span class="metric-value">${item.currentPrice}</span></div>
-                                    <div class="metric"><span class="metric-label">Fair Value</span><span class="metric-value">${item.fairValue}</span></div>
-                                    <div class="metric"><span class="metric-label">Riesgo</span><span class="metric-value"><span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">${item.riskLevel}</span></span></div>
+                                    <div class="metric">
+                                        <span class="metric-label">Precio Actual</span>
+                                        <span class="metric-value">${item.currentPrice}</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Fair Value</span>
+                                        <span class="metric-value">${item.fairValue}</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Riesgo</span>
+                                        <span class="metric-value">
+                                            <span class="risk-badge ${item.riskLevel === 'Bajo' ? 'risk-bajo' : item.riskLevel === 'Medio' ? 'risk-medio' : 'risk-alto'}">
+                                                ${item.riskLevel}
+                                            </span>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="card-date">Análisis: ${item.date}</div>
                                 <span class="card-button">▶ VER ANÁLISIS COMPLETO →</span>
                             </div>
                         </a>
                     `).join('')}
-                    items.map()
                 </div>
             </div>
         `;
     }).join('');
-    Object.entries().map()
 }
 
         // ← NUEVA FUNCIÓN: Actualizar contador
