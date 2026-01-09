@@ -280,6 +280,52 @@ header p:hover {
             border-color: rgba(176, 196, 222, 0.5);
         }
 
+        /* ← NUEVO: SELECTOR DE SORT */
+.sort-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 215, 255, 0.1);
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 215, 255, 0.2);
+}
+
+.sort-label {
+    color: var(--text-tertiary);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.sort-select {
+    background: rgba(26, 35, 50, 0.8);
+    color: var(--text-primary);
+    border: 1px solid rgba(0, 215, 255, 0.3);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sort-select:hover {
+    border-color: var(--text-primary);
+    background: rgba(0, 215, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 215, 255, 0.15);
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--text-primary);
+    box-shadow: 0 0 15px rgba(0, 215, 255, 0.2);
+}
+
+.sort-select option {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
         .filters-actions {
             display: flex;
             gap: 12px;
@@ -620,9 +666,16 @@ header p:hover {
         <!-- Los botones se generarán dinámicamente aquí -->
     </div>
             <div class="filters-actions">
-                <button class="clear-filters" onclick="clearFilters()">Limpiar filtros</button>
-            </div>
-        </div>
+    <div class="sort-container">
+        <span class="sort-label">📊 Ordenar por:</span>
+        <select class="sort-select" id="sortSelect" onchange="handleSortChange()">
+            <option value="default">Orden por defecto</option>
+            <option value="upside-desc">Mayor Upside ↓</option>
+            <option value="upside-asc">Menor Upside ↑</option>
+        </select>
+    </div>
+    <button class="clear-filters" onclick="clearFilters()">Limpiar filtros</button>
+</div>
 
         <!-- RESULTADOS AGRUPADOS POR TIPO DE INVERSIÓN -->
         <div id="resultsContainer">
@@ -709,12 +762,13 @@ header p:hover {
             // Aquí podrás añadir más empresas en el futuro
         ];
 
-        let activeFilters = new Set();
+     let activeFilters = new Set();
+     let sortBy = 'default'; // ← NUEVA VARIABLE
 
-        // ============================================
-        // RENDERIZADO
-        // ============================================
-        function renderResults() {
+    // ============================================
+    // RENDERIZADO
+    // ============================================
+    function renderResults() {
     const container = document.getElementById('resultsContainer');
     
     const filtered = activeFilters.size === 0 
@@ -729,10 +783,29 @@ header p:hover {
     }
 
     const grouped = {};
-    filtered.forEach(r => {
-        if (!grouped[r.type]) grouped[r.type] = [];
-        grouped[r.type].push(r);
-    });
+filtered.forEach(r => {
+    if (!grouped[r.type]) grouped[r.type] = [];
+    grouped[r.type].push(r);
+});
+
+// ← NUEVO: Aplicar sorting a cada grupo
+Object.keys(grouped).forEach(typeKey => {
+    const items = grouped[typeKey];
+    
+    if (sortBy === 'upside-desc') {
+        items.sort((a, b) => {
+            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+            return upsideB - upsideA;
+        });
+    } else if (sortBy === 'upside-asc') {
+        items.sort((a, b) => {
+            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+            return upsideA - upsideB;
+        });
+    }
+});
 
     container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
         const typeInfo = investmentTypes[typeKey];
@@ -784,7 +857,7 @@ header p:hover {
 }
 
         // ← NUEVA FUNCIÓN: Actualizar contador
-function updateCounter(count) {
+    function updateCounter(count) {
     const counterElement = document.getElementById('totalCounter');
     counterElement.textContent = count;
     
@@ -794,8 +867,8 @@ function updateCounter(count) {
     setTimeout(() => {
         counterElement.style.transform = 'scale(1)';
     }, 150);
-}
-function renderFilters() {
+    }
+    function renderFilters() {
     const container = document.getElementById('filtersContainer');
     container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
         <button 
@@ -806,9 +879,9 @@ function renderFilters() {
             ${type.icon} ${type.name}
         </button>
     `).join('');
-}
+    }
 
-function toggleFilter(typeKey) {
+    function toggleFilter(typeKey) {
     if (activeFilters.has(typeKey)) {
         activeFilters.delete(typeKey);
     } else {
@@ -816,13 +889,18 @@ function toggleFilter(typeKey) {
     }
     renderResults();
     renderFilters();
-}
+    }
 
-function clearFilters() {
+    function clearFilters() {
     activeFilters.clear();
     renderFilters();
     renderResults();
-}
+    }
+    function handleSortChange() {
+    const sortSelect = document.getElementById('sortSelect');
+    sortBy = sortSelect.value;
+    renderResults();
+    }
         
         // INICIAR
         document.addEventListener('DOMContentLoaded', () => {
