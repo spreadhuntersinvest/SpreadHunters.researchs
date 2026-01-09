@@ -947,19 +947,14 @@ header p:hover {
 
         // ← NUEVA FUNCIÓN: Actualizar contador
     function updateCounter(count) {
-    const counterElement = document.getElementById('totalCounter');
-    counterElement.textContent = count;
-    
-    // Efecto visual opcional: animar cambio
-    counterElement.style.transition = 'all 0.3s ease';
-    counterElement.style.transform = 'scale(1.1)';
-    setTimeout(() => {
-        document.querySelector('.investment-type-section')?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }, 100);
-}
+        const counterElement = document.getElementById('totalCounter');
+        counterElement.textContent = count;
+        counterElement.style.transition = 'all 0.3s ease';
+        counterElement.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            counterElement.style.transform = 'scale(1)';
+        }, 150);
+    }
     function renderFilters() {
     const container = document.getElementById('filtersContainer');
     container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
