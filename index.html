@@ -933,9 +933,12 @@ Object.keys(grouped).forEach(typeKey => {
     counterElement.style.transition = 'all 0.3s ease';
     counterElement.style.transform = 'scale(1.1)';
     setTimeout(() => {
-        counterElement.style.transform = 'scale(1)';
-    }, 150);
-    }
+        document.querySelector('.investment-type-section')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }, 100);
+}
     function renderFilters() {
     const container = document.getElementById('filtersContainer');
     container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
