@@ -184,15 +184,47 @@ header p:hover {
             backdrop-filter: blur(10px);
         }
 
-        .filters-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filters-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filters-counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 215, 255, 0.1);
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 215, 255, 0.2);
+}
+
+.counter-label {
+    color: var(--text-tertiary);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.counter-value {
+    color: var(--text-primary);
+    font-size: 1.3em;
+    font-weight: 700;
+    min-width: 25px;
+    text-align: center;
+}
 
         .filters-grid {
             display: grid;
@@ -511,10 +543,16 @@ header p:hover {
         </header>
         <!-- SECCIÓN DE FILTROS -->
         <div class="filters-section">
-            <div class="filters-title">🔍 Filtrar por tipo de inversión</div>
-            <div class="filters-grid" id="filtersContainer">
-                <!-- Los botones se generarán dinámicamente aquí -->
-            </div>
+    <div class="filters-header">
+        <div class="filters-title">🔍 Filtrar por tipo de inversión</div>
+        <div class="filters-counter">
+            <span class="counter-label">📊 Researchs Activos:</span>
+            <span class="counter-value" id="totalCounter">0</span>
+        </div>
+    </div>
+    <div class="filters-grid" id="filtersContainer">
+        <!-- Los botones se generarán dinámicamente aquí -->
+    </div>
             <div class="filters-actions">
                 <button class="clear-filters" onclick="clearFilters()">Limpiar filtros</button>
             </div>
@@ -637,17 +675,20 @@ header p:hover {
         }
 
         function renderResults() {
-            const container = document.getElementById('resultsContainer');
-            
-            // Filtrar
-            const filtered = activeFilters.size === 0 
-                ? researchesData 
-                : researchesData.filter(r => activeFilters.has(r.type));
+    const container = document.getElementById('resultsContainer');
+    
+    // Filtrar
+    const filtered = activeFilters.size === 0 
+        ? researchesData 
+        : researchesData.filter(r => activeFilters.has(r.type));
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
-                return;
-            }
+    // ← NUEVO: Actualizar contador
+    updateCounter(filtered.length);
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="no-results"><h3>📭 No hay análisis con estos filtros</h3></div>`;
+        return;
+    }
 
             // Agrupar
             const grouped = {};
@@ -691,6 +732,19 @@ header p:hover {
                 `;
             }).join('');
         }
+
+        // ← NUEVA FUNCIÓN: Actualizar contador
+function updateCounter(count) {
+    const counterElement = document.getElementById('totalCounter');
+    counterElement.textContent = count;
+    
+    // Efecto visual opcional: animar cambio
+    counterElement.style.transition = 'all 0.3s ease';
+    counterElement.style.transform = 'scale(1.1)';
+    setTimeout(() => {
+        counterElement.style.transform = 'scale(1)';
+    }, 150);
+}
 
         // INICIAR
         document.addEventListener('DOMContentLoaded', () => {
