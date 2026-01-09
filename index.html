@@ -795,7 +795,35 @@ function updateCounter(count) {
         counterElement.style.transform = 'scale(1)';
     }, 150);
 }
+function renderFilters() {
+    const container = document.getElementById('filtersContainer');
+    container.innerHTML = Object.entries(investmentTypes).map(([key, type]) => `
+        <button 
+            class="filter-btn ${activeFilters.has(key) ? 'active' : ''}" 
+            onclick="toggleFilter('${key}')"
+            title="${type.description}"
+        >
+            ${type.icon} ${type.name}
+        </button>
+    `).join('');
+}
 
+function toggleFilter(typeKey) {
+    if (activeFilters.has(typeKey)) {
+        activeFilters.delete(typeKey);
+    } else {
+        activeFilters.add(typeKey);
+    }
+    renderResults();
+    renderFilters();
+}
+
+function clearFilters() {
+    activeFilters.clear();
+    renderFilters();
+    renderResults();
+}
+        
         // INICIAR
         document.addEventListener('DOMContentLoaded', () => {
             renderFilters();
