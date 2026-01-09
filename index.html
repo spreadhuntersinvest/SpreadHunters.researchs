@@ -874,6 +874,34 @@ Object.keys(grouped).forEach(typeKey => {
         });
     }
 });
+        Object.keys(grouped).forEach(typeKey => {
+    const items = grouped[typeKey];
+    
+    if (sortBy === 'upside-desc') {
+        items.sort((a, b) => {
+            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+            return upsideB - upsideA;
+        });
+    } else if (sortBy === 'upside-asc') {
+        items.sort((a, b) => {
+            const upsideA = parseFloat(a.upside.replace('+', '').replace('%', ''));
+            const upsideB = parseFloat(b.upside.replace('+', '').replace('%', ''));
+            return upsideA - upsideB;
+        });
+    }
+});
+
+// ← NUEVO: SCROLL SOLO SI HAY FILTROS ACTIVOS
+if (activeFilters.size > 0) {
+    setTimeout(() => {
+        document.querySelector('.investment-type-section')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }, 100);
+}
+}
 
     container.innerHTML = Object.entries(grouped).map(([typeKey, items]) => {
         const typeInfo = investmentTypes[typeKey];
