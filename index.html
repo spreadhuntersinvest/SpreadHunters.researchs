@@ -1126,20 +1126,20 @@ function showToast(message, type = 'success') {
 // FUNCIÓN: Cargar todos los precios (CON RACE)
 // ============================================
 async function loadAllPrices() {
+    renderResults(); // Muestra cajas AHORA (vacías o con precios antiguos)
+    
+    // Luego actualiza en background
     try {
-        // 🔑 CLAVE: Promise.allSettled para que no bloquee si una falla
         const promises = researchesData.map(r => fetchCurrentPrice(r));
         const results = await Promise.allSettled(promises);
         
-        // Contar éxitos y fallos
+        // Actualizar solo las que cambiaron
         const succeeded = results.filter(r => r.status === 'fulfilled').length;
-        const failed = results.filter(r => r.status === 'rejected').length;
+        console.log(`✅ Actualizadas: ${succeeded}`);
         
-        console.log(`✅ Precios cargados: ${succeeded} éxito, ${failed} fallback`);
+        renderResults(); // Re-renderizar con nuevos precios
     } catch (error) {
-        console.error('Error cargando precios:', error);
-    } finally {
-        renderResults(); // Mostrar resultados inmediatamente
+        console.error('Error:', error);
     }
 }
         // ============================================
