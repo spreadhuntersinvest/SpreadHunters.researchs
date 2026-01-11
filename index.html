@@ -1058,9 +1058,9 @@ function getUpsideSymbol(upsidePercent) {
 // ============================================
 async function fetchCurrentPrice(research) {
     try {
-        // 🔑 CLAVE: Timeout de 3 segundos máximo
+        // 🔑 CLAVE: Timeout de 2 segundos máximo
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
         
         const response = await fetch(
             `${FINNHUB_BASE_URL}?symbol=${research.ticker_finnhub}&token=${FINNHUB_API_KEY}`,
