@@ -9,16 +9,17 @@
     
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
+            /* NUEVOS COLORES SPREAD HUNTERS */
+            --primary-color: #00D4D4;           /* Cyan principal */
+            --secondary-color: #00A8A8;        /* Cyan oscuro */
+            --success-color: #00D97B;          /* Verde */
+            --danger-color: #FF4444;           /* Rojo */
+            --warning-color: #FFA500;          /* Naranja */
+            --dark-bg: #0F1419;                /* Tu fondo oscuro */
+            --card-bg: #1A1F2E;                /* Card con transparencia */
+            --text-primary: #FFFFFF;           /* Texto blanco */
+            --text-secondary: #B0B8C8;         /* Gris claro */
+            --border-color: #2A3141;           /* Borde oscuro */
         }
 
         * {
@@ -27,17 +28,25 @@
             box-sizing: border-box;
         }
 
+        /* ← AQUÍ AÑADE EL FONDO ESTANDARIZADO */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--dark-bg);
+            background: linear-gradient(135deg, rgba(15, 20, 25, 0.98) 0%, rgba(10, 14, 19, 0.99) 100%), 
+                        url('bg_tesis_sh.png') center/cover fixed no-repeat;
+            background-color: #0F1419;
             color: var(--text-primary);
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
 
         /* Header */
@@ -46,6 +55,8 @@
             padding: 60px 0;
             text-align: center;
             border-bottom: 4px solid var(--success-color);
+            position: relative;
+            z-index: 2;
         }
 
         header h1 {
@@ -104,13 +115,15 @@
         .nav-tabs a:hover,
         .nav-tabs a.active {
             background: var(--primary-color);
-            color: white;
+            color: var(--dark-bg);
         }
 
         /* Sections */
         section {
             padding: 60px 0;
             border-bottom: 1px solid var(--border-color);
+            position: relative;
+            z-index: 1;
         }
 
         section h2 {
@@ -135,11 +148,15 @@
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 212, 212, 0.15);
+            border-color: var(--primary-color);
         }
 
         /* Stats Grid */
@@ -156,6 +173,9 @@
             border-radius: 12px;
             text-align: center;
             border: 2px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         .stat-card .label {
@@ -169,7 +189,7 @@
         .stat-card .value {
             font-size: 2rem;
             font-weight: 700;
-            color: var(--success-color);
+            color: var(--primary-color);
         }
 
         .stat-card .change {
@@ -197,6 +217,7 @@
             background: var(--card-bg);
             border-radius: 8px;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         thead {
@@ -217,7 +238,7 @@
         }
 
         tr:hover {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(0, 212, 212, 0.1);
         }
 
         /* Alert Boxes */
@@ -226,20 +247,21 @@
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid;
+            backdrop-filter: blur(10px);
         }
 
         .alert-success {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(0, 217, 123, 0.15);
             border-color: var(--success-color);
         }
 
         .alert-warning {
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(255, 165, 0, 0.15);
             border-color: var(--warning-color);
         }
 
         .alert-info {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(0, 212, 212, 0.15);
             border-color: var(--primary-color);
         }
 
@@ -252,10 +274,13 @@
         }
 
         .highlight-item {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(37, 99, 235, 0.1) 100%);
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 212, 212, 0.1) 100%);
             padding: 25px;
             border-radius: 12px;
             border-left: 4px solid var(--primary-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         .highlight-item h4 {
@@ -268,6 +293,7 @@
         .timeline {
             position: relative;
             padding: 20px 0;
+            z-index: 1;
         }
 
         .timeline-item {
@@ -313,7 +339,7 @@
             display: inline-block;
             padding: 12px 30px;
             background: var(--primary-color);
-            color: white;
+            color: var(--dark-bg);
             text-decoration: none;
             border-radius: 6px;
             font-weight: 600;
@@ -325,15 +351,16 @@
         .btn:hover {
             background: var(--secondary-color);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 212, 212, 0.4);
         }
 
         .btn-success {
             background: var(--success-color);
+            color: var(--dark-bg);
         }
 
         .btn-success:hover {
-            background: #059669;
+            background: #00b868;
         }
 
         /* Footer */
@@ -343,6 +370,9 @@
             text-align: center;
             margin-top: 60px;
             border-top: 2px solid var(--border-color);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
 
         footer p {
@@ -395,6 +425,24 @@
             background: var(--success-color);
             z-index: 9999;
             transition: width 0.1s ease;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 20, 25, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
         }
     </style>
 </head>
