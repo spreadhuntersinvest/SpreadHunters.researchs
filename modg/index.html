@@ -74,6 +74,45 @@
    CABECERA PROFESIONAL - BLOOMBERG STYLE
    ======================================== */
 
+.logo-navbar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 12px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(74, 127, 127, 0.1);
+}
+
+.logo-navbar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-navbar-img {
+    width: 40px;
+    height: auto;
+    filter: grayscale(100%) opacity(0.7);
+}
+
+.logo-navbar a:hover .logo-navbar-img {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .logo-navbar { top: 10px; left: 10px; }
+    .logo-navbar-img { width: 35px; }
+}
+
+@media (max-width: 480px) {
+    .logo-navbar { top: 8px; left: 8px; }
+    .logo-navbar-img { width: 30px; }
+}
+
 .header-professional {
     margin: 0;                    
     padding: 50px 20px;
@@ -640,6 +679,13 @@
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Logo en esquina superior izquierda -->
+<div class="logo-navbar">
+    <a href="/">
+        <img src="../images/logo_sh.svg" alt="SpreadHunters" class="logo-navbar-img">
+    </a>
+</div>
 
     <!-- Header -->
     <!-- Cabecera Profesional con Logo SpreadHunters + Logo Compañía -->
