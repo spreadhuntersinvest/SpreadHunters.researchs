@@ -78,12 +78,12 @@
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 900;                /* ← Menor que header */
+    z-index: 900;
     background: none;
     padding: 0;
     border: none;
     backdrop-filter: none;
-    pointer-events: none;        /* ← NO INTERFIERE */
+    pointer-events: none;
 }
 
 .logo-navbar-img {
@@ -93,14 +93,22 @@
     display: block;
 }
 
-@media (max-width: 768px) {
-    .logo-navbar { top: 10px; left: 10px; }
-    .logo-navbar-img { width: 35px; }
+/* TABLETS - iPad y similares */
+@media (max-width: 1024px) {
+    .logo-navbar { top: 15px; left: 15px; }
+    .logo-navbar-img { width: 100px; }
 }
 
+/* MOBILE - Desde 768px a 480px */
+@media (max-width: 768px) {
+    .logo-navbar { top: 12px; left: 12px; }
+    .logo-navbar-img { width: 80px; }
+}
+
+/* MOBILE PEQUEÑO - Menos de 480px */
 @media (max-width: 480px) {
-    .logo-navbar { top: 8px; left: 8px; }
-    .logo-navbar-img { width: 30px; }
+    .logo-navbar { top: 10px; left: 10px; }
+    .logo-navbar-img { width: 60px; }
 }
 
         /* ========================================
