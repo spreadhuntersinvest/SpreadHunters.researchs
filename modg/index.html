@@ -78,29 +78,19 @@
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1000;
-    background: none;           /* ← Transparente */
-    padding: 0;                 /* ← Sin padding */
-    border: none;               /* ← Sin borde */
-    backdrop-filter: none;      /* ← Sin blur */
-}
-
-.logo-navbar a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: none;           /* ← Sin transición */
+    z-index: 900;                /* ← Menor que header */
+    background: none;
+    padding: 0;
+    border: none;
+    backdrop-filter: none;
+    pointer-events: none;        /* ← NO INTERFIERE */
 }
 
 .logo-navbar-img {
     width: 40px;
     height: auto;
-    filter: none;               /* ← Color normal (NO grisáceo) */
-}
-
-.logo-navbar a:hover .logo-navbar-img {
     filter: none;
-    transform: none;            /* ← Sin cambios en hover */
+    display: block;
 }
 
 @media (max-width: 768px) {
@@ -658,9 +648,8 @@
 
     <!-- Logo en esquina superior izquierda -->
 <div class="logo-navbar">
-    <a href="/">
-        <img src="../images/logo_sh.svg" alt="SpreadHunters" class="logo-navbar-img">
-    </a>
+    <img src="../images/logo_sh.svg" alt="SpreadHunters" class="logo-navbar-img">
+</div>
 </div>
 
     <!-- Header -->
