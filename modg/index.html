@@ -109,12 +109,16 @@
     filter: grayscale(100%) opacity(0.8);
     transition: none;
     cursor: default;
+    
+    border-radius: 12px;                  /* ← ESQUINAS REDONDEADAS */
+    padding: 8px 12px;                    /* ← ESPACIO INTERNO */
+    background: rgba(255, 255, 255, 0.02);  /* ← FONDO MUY SUTIL */
 }
 
-/* SIN HOVER - Completamente estático */
 .logo-sh:hover {
     filter: grayscale(100%) opacity(0.8);
     transform: none;
+    border-radius: 12px;
 }
 
 /* ========================================
