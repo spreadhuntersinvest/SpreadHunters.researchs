@@ -641,9 +641,9 @@
         /* Investment Metrics Section */
         .investment-metrics {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  
+            gap: 15px;  
+            margin: 20px 0;  
             width: 100%;
         }
 
@@ -651,7 +651,7 @@
             background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(30, 50, 80, 0.6) 100%);
             border: 2px solid rgba(0, 215, 255, 0.3);
             border-radius: 12px;
-            padding: 25px;
+            padding: 18px; 
             text-align: center;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
@@ -685,9 +685,9 @@
         }
 
         .metric-value {
-            font-size: 2rem;
+            font-size: 1.7rem;  
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 5px; 
             letter-spacing: -0.5px;
         }
 
@@ -700,7 +700,7 @@
         }
 
         .metric-subtitle {
-            font-size: 0.85rem;
+            font-size: 0.8rem;  /* ← Cambié de 0.85rem a 0.8rem */
             color: var(--text-tertiary);
             font-weight: 400;
         }
@@ -736,7 +736,12 @@
             }
 
             .metric-label {
-                font-size: 0.7rem;
+                font-size: 0.7rem;  /* ← Cambié de 0.75rem a 0.7rem */
+                text-transform: uppercase;
+                letter-spacing: 1px;  /* ← Cambié de 1.5px a 1px */
+                color: var(--text-secondary);
+                margin-bottom: 8px;  /* ← Cambié de 12px a 8px */
+                font-weight: 600;
             }
         }
     </style>
@@ -765,12 +770,7 @@
             <p class="page-subtitle">Análisis de Inversión: La Transformación a "Pure Play"</p>
         </div>
         
-        <div class="ticker-info">
-            <span><strong>Ticker:</strong> NYSE: CALY</span>
-            <span><strong>Precio:</strong> $11.88</span>
-            <span><strong>Target:</strong> $22.88</span>
-                </div>
-                <div class="investment-metrics">
+            <div class="investment-metrics">
             <div class="metric-card">
                 <div class="metric-label">PRECIO ACTUAL</div>
                 <div class="metric-value cyan">$11.88</div>
