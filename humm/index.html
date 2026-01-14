@@ -62,22 +62,40 @@
             backdrop-filter: none;
             pointer-events: none;
         }
-
+        
         .logo-navbar-img {
-            width: 120px;
+            width: 160px;
             height: auto;
             filter: none;
             display: block;
         }
-
-        .header-professional {
-            margin: 0;                    
-            padding: 50px 20px;
-            background: transparent;      
-            border-bottom: 1px solid rgba(74, 127, 127, 0.1);  
-            backdrop-filter: blur(3px);   
-            position: relative;
-            z-index: 2;
+        
+            /* TABLETS */
+            @media (max-width: 1024px) {
+                .logo-navbar { top: 15px; left: 15px; }
+                .logo-navbar-img { width: 105px; }
+            }
+            
+            /* MOBILE /
+            @media (max-width: 768px) {
+                .logo-navbar { top: 15px; left: 15px; }
+                .logo-navbar-img { width: 95px; }
+            }
+            
+            /* MOBILE PEQUEÑO - Menos de 480px */
+            @media (max-width: 480px) {
+                .logo-navbar { top: 12px; left: 12px; }
+                .logo-navbar-img { width: 85px; }
+            }
+    
+            .header-professional {
+                margin: 0;                    
+                padding: 50px 20px;
+                background: transparent;      
+                border-bottom: 1px solid rgba(74, 127, 127, 0.1);  
+                backdrop-filter: blur(3px);   
+                position: relative;
+                z-index: 2;
         }
 
         .header-professional .container {
