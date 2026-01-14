@@ -8,22 +8,31 @@
     
     <style>
         :root {
-            --primary-color: #4A7F7F;
-            --secondary-color: #2D4E4E;
-            --accent-color: #00E0D1;
-            --success-color: #4A9B6F;
-            --danger-color: #8B4A4A;
-            --warning-color: #8B7A4A;
-            --info-color: #4A7F8B;
-            --dark-bg: #0D1117;
-            --darker-bg: #080A0F;
-            --card-bg: #161B22;
-            --light-bg: #E8E8E8;
-            --text-primary: #F0F0F0;
-            --text-secondary: #A8A8A8;
-            --text-tertiary: #808080;
-            --border-color: #2A3540;
-            --border-light: #4A5A68;
+             /* COLORES PRIMARIOS - Alineados con SpreadHunters */
+    		--primary-color: #00d7ff;           /* Cyan brillante */
+   		--secondary-color: #1a2332;         /* Azul oscuro base */
+   		--accent-color: #4A8B9B;            /* Azul teal claro */
+    
+    		/* COLORES FUNCIONALES */
+    		--success-color: #90ee90;           /* Verde */
+    		--danger-color: #ff6b6b;            /* Rojo */
+    		--warning-color: #ffa500;           /* Naranja */
+    		--info-color: #00d7ff;              /* Cyan */
+
+    		/* FONDOS */
+    		--dark-bg: #1a2332;                 /* Azul principal */
+    		--darker-bg: #0f1419;               /* Azul muy oscuro */
+    		--card-bg: #1a2538;                 /* Azul cards */
+    		--light-bg: #E8E8E8;                /* Igual que CALY */
+
+    		/* TEXTO */
+   		 --text-primary: #d0d8e0;            /* Gris claro */
+    		--text-secondary: #b0c4de;          /* Gris medio */
+    		--text-tertiary: #808080;           /* Gris oscuro */
+
+    		/* BORDES */
+    		--border-color: #2d3d4d;            /* Borde azulado */
+    		--border-light: #3d5570;            /* Borde azul claro */
         }    
 
         * {
@@ -33,15 +42,16 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, rgba(13, 17, 23, 0.95) 0%, rgba(8, 10, 15, 0.99) 100%);
-            background-color: #0D1117;
-            color: var(--text-primary);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
+    		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    		background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(30, 50, 80, 0.95) 100%);
+    		background-color: #1a2332;   /* mismo dark-bg */
+    		color: var(--text-primary);
+    		line-height: 1.6;
+   		 margin: 0;
+   		 padding: 0;
+   		 min-height: 100vh;
+		}
+
 
         .container {
             max-width: 1200px;
@@ -185,19 +195,19 @@
         }
 
         .card {
-            background: rgba(22, 27, 34, 0.8);
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    		background: rgba(26, 35, 50, 0.85);
+    		border-radius: 8px;
+    		padding: 25px;
+    		margin-bottom: 20px;
+    		border: 1px solid var(--border-color);
+    		backdrop-filter: blur(10px);
+    		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
         
         .card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 1px 3px rgba(74, 127, 127, 0.05);
+            	border-color: var(--primary-color);
+    		box-shadow: 0 1px 3px rgba(74, 127, 127, 0.05);
         }
 
         .stats-grid {
@@ -291,8 +301,10 @@
         }
 
         .alert-success {
-            background: rgba(74, 155, 111, 0.08);
-            border-color: var(--success-color);
+    		background: rgba(74, 155, 111, 0.08);
+    		border-color: var(--success-color);
+    		border-left: 3px solid var(--success-color);
+    		border-radius: 4px;
         }
 
         .alert-warning {
