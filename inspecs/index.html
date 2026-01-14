@@ -596,22 +596,51 @@
         .mb-20 {
             margin-bottom: 20px;
         }
+        
+    .logo-company-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 30px rgba(0, 215, 255, 0.3);
+    object-fit: cover;      /* Para que la imagen se ajuste bien */
+    display: block;
+}
+
+/* Mantén la clase anterior por si acaso */
+.logo-company {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 32px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 30px rgba(0, 215, 255, 0.3);
+    display: none;  /* ← Oculta esto cuando uses imagen */
+}
     </style>
 </head>
 <body>
     <!-- Logo SpreadHunters -->
     <div class="logo-navbar">
-        <div class="container">
-            <div style="color: var(--primary-color); font-weight: 700; font-size: 14px; letter-spacing: 2px;">🎯 SPREADHUNTERS RESEARCH</div>
-        </div>
+    <div class="container">
+        <img src="../images/logo_sh.png" 
+             alt="SpreadHunters" 
+             class="logo-navbar-img">
     </div>
+</div>
 
     <!-- Header Profesional -->
     <header class="header-professional">
         <div class="container">
             <div class="header-title-section">
                 <div class="company-title-row">
-                    <div class="logo-company">SPEC</div>
+                    <div class="logo-company">../images/inspecs.png</div>
                     <div>
                         <h1 class="page-title">Inspecs Group (SPEC.L)</h1>
                         <p class="page-subtitle">Análisis de Oportunidad de Arbitraje de Fusiones - Oferta Bidco 1125 @ 84p</p>
