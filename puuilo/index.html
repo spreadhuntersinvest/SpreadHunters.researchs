@@ -63,7 +63,7 @@
             z-index: 1;
         }
 
-        /* Logo SpreadHunters */
+        /* Logo SpreadHunters - PLANO SIN HOVER */
         .logo-navbar {
             position: fixed;
             top: 15px;
@@ -72,14 +72,10 @@
         }
 
         .logo-navbar img {
-            width: 45px;
+            width: 160px;
             height: auto;
             border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .logo-navbar img:hover {
-            transform: scale(1.05);
+            display: block;
         }
 
         /* Header Professional */
@@ -609,11 +605,15 @@
             .timeline-item::before {
                 left: -20px;
             }
+
+            .logo-navbar img {
+                width: 120px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Logo SpreadHunters -->
+    <!-- Logo SpreadHunters - PLANO SIN HOVER -->
     <div class="logo-navbar">
         <img src="../images/logo_sh.svg" alt="SpreadHunters" class="logo-navbar-img">
     </div>
