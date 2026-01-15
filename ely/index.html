@@ -41,24 +41,13 @@
             --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        html,  /* ← AQUÍ AÑADE EL FONDO ESTANDARIZADO */
-           body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(30, 50, 80, 0.95) 100%);
-    /* ← SIN url('../images/Fondo_SpreadHunters.png') */
-    background-color: #1a2332;
-    color: var(--text-primary);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    }
-
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    }
+        html, body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+        }
 
         .container {
             max-width: 1200px;
@@ -133,7 +122,7 @@
             width: auto;
             height: auto;
             object-fit: contain;
-            filter: brightness(4) contrast(1.5) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
             display: block;
             margin: 0 auto;
         }
@@ -665,7 +654,9 @@
 <body>
     <!-- Logo en esquina superior izquierda -->
     <div class="logo-navbar">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 40'%3E%3Crect fill='%2300d7ff' width='20' height='40' rx='2'/%3E%3Ctext x='30' y='28' font-family='Arial' font-size='16' font-weight='bold' fill='%2300d7ff'%3ESPREADHUNTERS%3C/text%3E%3C/svg%3E" alt="SpreadHunters" class="logo-navbar-img">
+        <a href="https://github.com/spreadhuntersinvest/SpreadHunters.researchs" target="_blank" style="pointer-events: auto; display: block;">
+            <img src="https://raw.githubusercontent.com/spreadhuntersinvest/SpreadHunters.researchs/main/images/logo_sh.svg" alt="SpreadHunters" class="logo-navbar-img">
+        </a>
     </div>
 
     <div class="container">
@@ -1317,21 +1308,20 @@
             </section>
         </div>
 
-        <!-- DISCLAIMER & FOOTER -->
-        
-       
+        <!-- FOOTER -->
+          <footer>
+            		<div class="container">
+             		   <p><strong>Disclaimer:</strong> Este análisis se proporciona únicamente con propósitos informativos y educativos. No constituye asesoramiento financiero ni recomendación personalizada de inversión. Consulte con un asesor financiero profesional antes de tomar decisiones de inversión.</p>
+               		 <p style="margin-top: 20px; font-size: 0.85rem;">
+                    📅  Fecha de Publicación: 6 de enero de 2026 | Actualización: 15 de enero de 2026 | <strong>📊 Fuentes:</strong> Información basada en IR pública de Electrum Discovery Corp. y MinRex Resources Ltd.</p>
+                	<p style="margin-top: 15px;">
+                    	🔗 <a href="https://spreadhuntersinvest.github.io/SpreadHunters.researchs/" style="color: var(--primary-color); text-decoration: none;">SpreadHunters Investment Research</a> | 📋 <a href="https://substack.com/@spreadhunters" style="color: var(--primary-color); text-decoration: none;">Substack</a> | 𝕏 <a href="https://x.com/Spread_Hunters" style="color: var(--primary-color); text-decoration: none;">Twitter/X</a>
+                	</p>
+                	<p>© 2026 SpreadHunters. Todos los derechos reservados.</p>
+            		</div>
+        		</footer>
     </div>
-<footer>
-        <div class="container">
-            <p><strong>Disclaimer:</strong> Este análisis se proporciona únicamente con propósitos informativos y educativos. No constituye asesoramiento financiero ni recomendación personalizada de inversión. Consulte con un asesor financiero profesional antes de tomar decisiones de inversión.</p>
-            <p style="margin-top: 20px; font-size: 0.85rem;">
-                📅  Fecha de Publicación: 6 de enero de 2026 | Actualización: 15 de enero de 2026 |<strong>📊 Fuentes:</strong> Información basada en IR pública de Electrum Discovery Corp. y MinRex Resources Ltd.</p>
-            <p style="margin-top: 15px;">
-                🔗 <a href="https://spreadhuntersinvest.github.io/SpreadHunters.researchs/" style="color: var(--primary-color); text-decoration: none;">SpreadHunters Investment Research</a> | 📋 <a href="https://substack.com/@spreadhunters" style="color: var(--primary-color); text-decoration: none;">Substack</a>| 𝕏 <a href="https://x.com/Spread_Hunters" style="color: var(--primary-color); text-decoration: none;">Twitter/X</a>
-            </p>
-             <p>© 2026 SpreadHunters. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+
     <script>
         // Manejo de navegación de tabs
         document.querySelectorAll('.nav-tab').forEach(button => {
@@ -1353,3 +1343,4 @@
     </script>
 </body>
 </html>
+
