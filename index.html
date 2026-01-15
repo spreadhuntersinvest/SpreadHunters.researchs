@@ -1150,14 +1150,15 @@ async function loadAllPrices() {
         // ============================================
         const investmentTypes = {
             'long-value-growth': { name: 'Long Value-Growth', icon: '📈', description: 'Compañías con crecimiento sólido', color: '#00d7ff' },
-            'spin-offs': { name: 'Spin-offs', icon: '🔀', description: 'Separación de unidades', color: '#00d7ff' },
-            'shorts-situations': { name: 'Short Situations', icon: '⬇️', description: 'Oportunidades de venta corta', color: '#ff6b6b' },
+            'spin-offs': { name: 'Spin-offs', icon: '🧩', description: 'Separación de unidades', color: '#00d7ff' },
+            'shorts-situations': { name: 'Short Situations', icon: '📉', description: 'Oportunidades de venta corta', color: '#ff6b6b' },
             'uplisting': { name: 'Uplisting', icon: '⬆️', description: 'Cambios de bolsa/índice', color: '#90ee90' },
-            'demergers': { name: 'Demergers', icon: '📊', description: 'Escisiones de empresas', color: '#ffa500' },
+            'demergers': { name: 'Demergers', icon: '🔀', description: 'Escisiones de empresas', color: '#ffa500' },
             'tender-offers': { name: 'Tender Offers', icon: '🎯', description: 'Ofertas públicas', color: '#00d7ff' },
             'turnaround': { name: 'Turnaround', icon: '🔄', description: 'Empresas en recuperación', color: '#ffa500' },
             'takeover': { name: 'Takeover', icon: '🏢', description: 'Adquisiciones y fusiones', color: '#00d7ff' },
-            'odd-lots': { name: 'Odd Lots', icon: '🎲', description: 'Pequeños números de acciones', color: '#b0c4de' }
+            'odd-lots': { name: 'Odd Lots', icon: '🤏', description: 'Pequeños números de acciones', color: '#b0c4de' }
+            'merger': { name: 'Merger', icon: '🤝', description: 'Fusiones', color: '#b0c4de' }
         };
 
         // ============================================
@@ -1305,6 +1306,26 @@ async function loadAllPrices() {
                 upsideActual: '20%',
                 priceSource: 'manual',
                 riskLevel: 'Bajo'
+            },
+             {
+                id: 'ely',
+                path: './ely/index.html',
+                type: 'merger',
+                ticker: 'ELY.V',
+                company: 'Electrum Discovery Corp.',
+                sector: 'Canadian mineral explorer',
+                logo: 'images/ely.png',
+                thesisDate: '2026-01-06',
+                thesisPrice: 'CAD 0,0850',
+                fairValue: 'CAD 0,1580',
+                fairValueRaw: 0.84,
+                upsideInitial: '+85,9%',
+                ticker_finnhub: 'ELY.V',
+                currentPrice: 'CAD 0,10',
+                currency: 'CAD',
+                upsideActual: 'xx%',
+                priceSource: 'manual',
+                riskLevel: 'Alto'
             },
             // Aquí podrás añadir más empresas en el futuro. Decimales en "."
         ];
