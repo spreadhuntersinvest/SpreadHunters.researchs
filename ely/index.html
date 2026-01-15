@@ -41,13 +41,24 @@
             --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        html, body {
-            font-family: var(--font-primary);
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--secondary-color) 100%);
-            min-height: 100vh;
-        }
+        html,  /* ← AQUÍ AÑADE EL FONDO ESTANDARIZADO */
+           body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(30, 50, 80, 0.95) 100%);
+    /* ← SIN url('../images/Fondo_SpreadHunters.png') */
+    background-color: #1a2332;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
 
         .container {
             max-width: 1200px;
