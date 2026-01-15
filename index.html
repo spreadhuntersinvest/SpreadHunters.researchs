@@ -930,6 +930,11 @@ header p:hover {
     border-radius: 10px;
     font-weight: 600;
 }
+    /* ← NUEVO: ESTILOS ESPECÍFICOS PARA LOGOS */
+    .logo-blanco {
+        filter: brightness(0) invert(1);
+        }
+
         
     </style>
 </head>
@@ -1399,7 +1404,7 @@ async function loadAllPrices() {
                         ${items.map(item => `
                             <a href="${item.path}" class="research-card">
     <div class="card-header">
-    <img src="${item.logo}" alt="${item.company}" class="card-logo">
+    <img src="${item.logo}" alt="${item.company}" class="card-logo ${['ELECTRUM', 'EMPRESA2', 'EMPRESA3'].includes(item.ticker) ? 'logo-blanco' : ''}">
     <div class="card-ticker">${item.ticker}</div>
     <div class="card-company">${item.company}</div>
     <div class="card-sector">${item.sector}</div>
